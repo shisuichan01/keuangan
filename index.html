@@ -1,54 +1,845 @@
-cat > /mnt/user-data/outputs/keuangan-pondok-mobile.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-<meta name="theme-color" content="#1a1610">
-<title>Keuangan Pondok - Mobile</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="theme-color" content="#0f172a">
+<title>Pondok Keuangan | Manajemen Keuangan Modern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  :root {
-    --bg: #f5f0e8;
-    --surface: #fffdf8;
-    --surface2: #f0ebe0;
-    --ink: #1a1610;
-    --ink2: #6b6050;
-    --ink3: #a09585;
-    --gold: #b8860b;
-    --gold-light: #f0e0a0;
-    --green: #2d6a4f;
-    --green-light: #d8f3dc;
-    --red: #9b2226;
-    --red-light: #ffe5e5;
-    --amber: #b5540a;
-    --amber-light: #fff0d0;
-    --blue: #1d4e89;
-    --blue-light: #dbeafe;
-    --border: #d8cfc0;
-    --border2: #ebe3d5;
-    --radius: 8px;
-    --mono: 'IBM Plex Mono', monospace;
-    --serif: 'Lora', Georgia, serif;
   }
 
   body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--mono);
-    font-size: 14px;
-    line-height: 1.5;
+    font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+    min-height: 100vh;
+    color: #1e293b;
   }
 
-  /* Mobile Navigation */
-  .mobile-nav {
+  /* Modern Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+
+  /* Container */
+  .app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Header Modern */
+  .glass-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 20px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .logo-area h1 {
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo-area p {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  .date-badge {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 10px 20px;
+    border-radius: 40px;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Navigation Modern */
+  .nav-modern {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 60px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .nav-item {
+    padding: 10px 24px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #64748b;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+  }
+
+  .nav-item i {
+    font-size: 16px;
+  }
+
+  .nav-item:hover {
+    background: #f1f5f9;
+    transform: translateY(-2px);
+  }
+
+  .nav-item.active {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+  }
+
+  /* Pages */
+  .page {
+    display: none;
+    animation: fadeInUp 0.4s ease;
+  }
+
+  .page.active {
+    display: block;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Stats Cards Modern */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+  }
+
+  .stat-card-modern {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(203, 213, 225, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+  }
+
+  .stat-card-modern:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .stat-icon.income {
+    background: linear-gradient(135deg, #10b98120, #05966920);
+    color: #059669;
+  }
+
+  .stat-icon.expense {
+    background: linear-gradient(135deg, #ef444420, #dc262620);
+    color: #dc2626;
+  }
+
+  .stat-icon.balance {
+    background: linear-gradient(135deg, #3b82f620, #2563eb20);
+    color: #2563eb;
+  }
+
+  .stat-icon.spp {
+    background: linear-gradient(135deg, #8b5cf620, #7c3aed20);
+    color: #7c3aed;
+  }
+
+  .stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 8px 0;
+  }
+
+  .stat-label {
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .stat-change {
+    font-size: 12px;
+    margin-top: 8px;
+    color: #94a3b8;
+  }
+
+  /* Cards */
+  .card-modern {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(203, 213, 225, 0.3);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-title i {
+    color: #1e3c72;
+    font-size: 20px;
+  }
+
+  /* Form Elements Modern */
+  .form-group-modern {
+    margin-bottom: 20px;
+  }
+
+  .form-group-modern label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #475569;
+  }
+
+  .form-group-modern input,
+  .form-group-modern select,
+  .form-group-modern textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    font-size: 14px;
+    transition: all 0.3s;
+    font-family: inherit;
+  }
+
+  .form-group-modern input:focus,
+  .form-group-modern select:focus,
+  .form-group-modern textarea:focus {
+    outline: none;
+    border-color: #1e3c72;
+    box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+  }
+
+  /* Buttons Modern */
+  .btn-modern {
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30, 60, 114, 0.3);
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: white;
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: white;
+  }
+
+  .btn-outline {
+    background: transparent;
+    border: 2px solid #e2e8f0;
+    color: #475569;
+  }
+
+  .btn-outline:hover {
+    border-color: #1e3c72;
+    color: #1e3c72;
+  }
+
+  .btn-sm {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  /* Tables */
+  .table-wrapper {
+    overflow-x: auto;
+    border-radius: 16px;
+  }
+
+  .table-modern {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table-modern thead tr {
+    background: #f8fafc;
+  }
+
+  .table-modern th {
+    padding: 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    color: #475569;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .table-modern td {
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+  }
+
+  .table-modern tbody tr:hover {
+    background: #f8fafc;
+  }
+
+  /* Badges */
+  .badge-modern {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    gap: 6px;
+  }
+
+  .badge-success {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .badge-danger {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .badge-warning {
+    background: #fed7aa;
+    color: #9a3412;
+  }
+
+  .badge-info {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  /* Progress Bar */
+  .progress-modern {
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #059669);
+    border-radius: 20px;
+    transition: width 0.5s ease;
+  }
+
+  /* Modal Modern */
+  .modal-modern {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-modern.show {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .modal-content-modern {
+    background: white;
+    border-radius: 32px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .modal-header-modern {
+    padding: 24px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-body-modern {
+    padding: 24px;
+  }
+
+  .modal-footer-modern {
+    padding: 16px 24px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  /* Month Tabs */
+  .month-tabs-modern {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .month-tab {
+    padding: 8px 20px;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+    font-family: inherit;
+  }
+
+  .month-tab.active {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+  }
+
+  /* Toolbar */
+  .toolbar-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .search-box-modern {
+    display: flex;
+    align-items: center;
+    background: #f1f5f9;
+    border-radius: 40px;
+    padding: 8px 16px;
+    gap: 8px;
+  }
+
+  .search-box-modern input {
+    border: none;
+    background: none;
+    padding: 8px;
+    width: 250px;
+    font-family: inherit;
+  }
+
+  .search-box-modern input:focus {
+    outline: none;
+  }
+
+  /* Toast Notification */
+  .toast-modern {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #1e293b;
+    color: white;
+    padding: 14px 24px;
+    border-radius: 60px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1100;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  .toast-modern.show {
+    transform: translateX(0);
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+  }
+
+  .empty-state i {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .app-container {
+      padding: 12px;
+    }
+
+    .glass-header {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .nav-modern {
+      border-radius: 20px;
+      padding: 12px;
+    }
+
+    .nav-item {
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+    }
+
+    .toolbar-modern {
+      flex-direction: column;
+    }
+
+    .search-box-modern input {
+      width: 100%;
+    }
+  }
+
+  /* Print */
+  @media print {
+    .nav-modern, .toolbar-modern, .btn-modern, .modal-modern {
+      display: none !important;
+    }
+    
+    .page {
+      display: block !important;
+    }
+    
+    .card-modern {
+      box-shadow: none;
+      border: 1px solid #ddd;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <!-- Header Glassmorphism -->
+  <div class="glass-header">
+    <div class="logo-area">
+      <h1><i class="fas fa-landmark"></i> Pondok Keuangan</h1>
+      <p>Sistem Manajemen Keuangan & SPP Modern</p>
+    </div>
+    <div class="date-badge">
+      <i class="far fa-calendar-alt"></i>
+      <span id="current-date"></span>
+    </div>
+  </div>
+
+  <!-- Navigation Modern -->
+  <div class="nav-modern">
+    <button class="nav-item active" onclick="showPage('dashboard')">
+      <i class="fas fa-chart-line"></i> Dashboard
+    </button>
+    <button class="nav-item" onclick="showPage('pemasukan')">
+      <i class="fas fa-arrow-down"></i> Pemasukan
+    </button>
+    <button class="nav-item" onclick="showPage('pengeluaran')">
+      <i class="fas fa-arrow-up"></i> Pengeluaran
+    </button>
+    <button class="nav-item" onclick="showPage('spp')">
+      <i class="fas fa-book"></i> SPP Santri
+    </button>
+    <button class="nav-item" onclick="showPage('santri')">
+      <i class="fas fa-users"></i> Data Santri
+    </button>
+    <button class="nav-item" onclick="showPage('laporan')">
+      <i class="fas fa-file-alt"></i> Laporan
+    </button>
+    <button class="nav-item" onclick="showPage('pengaturan')">
+      <i class="fas fa-cog"></i> Pengaturan
+    </button>
+  </div>
+
+  <!-- Dashboard Page -->
+  <div id="dashboard" class="page active">
+    <div class="stats-grid">
+      <div class="stat-card-modern">
+        <div class="stat-icon balance">
+          <i class="fas fa-wallet"></i>
+        </div>
+        <div class="stat-label">Total Saldo</div>
+        <div class="stat-value" id="total-balance">Rp 0</div>
+        <div class="stat-change">Saldo keseluruhan</div>
+      </div>
+      <div class="stat-card-modern">
+        <div class="stat-icon income">
+          <i class="fas fa-arrow-down"></i>
+        </div>
+        <div class="stat-label">Pemasukan Bulan Ini</div>
+        <div class="stat-value" id="month-income">Rp 0</div>
+        <div class="stat-change" id="income-count">0 transaksi</div>
+      </div>
+      <div class="stat-card-modern">
+        <div class="stat-icon expense">
+          <i class="fas fa-arrow-up"></i>
+        </div>
+        <div class="stat-label">Pengeluaran Bulan Ini</div>
+        <div class="stat-value" id="month-expense">Rp 0</div>
+        <div class="stat-change" id="expense-count">0 transaksi</div>
+      </div>
+      <div class="stat-card-modern">
+        <div class="stat-icon spp">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="stat-label">SPP Terkumpul</div>
+        <div class="stat-value" id="total-spp-collected">Rp 0</div>
+        <div class="stat-change" id="spp-count">0 santri lunas</div>
+      </div>
+    </div>
+
+    <div class="card-modern">
+      <div class="card-header">
+        <div class="card-title">
+          <i class="fas fa-history"></i> Transaksi Terbaru
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table class="table-modern">
+          <thead>
+            <tr><th>Tanggal</th><th>Keterangan</th><th>Jenis</th><th>Nominal</th></tr>
+          </thead>
+          <tbody id="recent-transactions"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pemasukan Page -->
+  <div id="pemasukan" class="page">
+    <div class="card-modern">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-arrow-down"></i> Data Pemasukan</div>
+        <button class="btn-modern btn-primary" onclick="openModal('modal-pemasukan')">
+          <i class="fas fa-plus"></i> Tambah Pemasukan
+        </button>
+      </div>
+      <div class="toolbar-modern">
+        <div class="search-box-modern">
+          <i class="fas fa-search"></i>
+          <input type="text" id="search-pemasukan" placeholder="Cari pemasukan..." onkeyup="filterPemasukan()">
+        </div>
+        <select id="filter-pemasukan-kat" class="btn-modern btn-outline" onchange="filterPemasukan()">
+          <option value="">Semua Kategori</option>
+          <option>SPP</option><option>Donasi</option><option>Infak</option><option>Lainnya</option>
+        </select>
+      </div>
+      <div class="table-wrapper">
+        <table class="table-modern">
+          <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Nominal</th><th>Aksi</th></tr></thead>
+          <tbody id="pemasukan-list"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pengeluaran Page -->
+  <div id="pengeluaran" class="page">
+    <div class="card-modern">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-arrow-up"></i> Data Pengeluaran</div>
+        <button class="btn-modern btn-primary" onclick="openModal('modal-pengeluaran')">
+          <i class="fas fa-plus"></i> Tambah Pengeluaran
+        </button>
+      </div>
+      <div class="toolbar-modern">
+        <div class="search-box-modern">
+          <i class="fas fa-search"></i>
+          <input type="text" id="search-pengeluaran" placeholder="Cari pengeluaran..." onkeyup="filterPengeluaran()">
+        </div>
+        <select id="filter-pengeluaran-kat" class="btn-modern btn-outline" onchange="filterPengeluaran()">
+          <option value="">Semua Kategori</option>
+          <option>Operasional</option><option>Gaji</option><option>Pembangunan</option><option>Lainnya</option>
+        </select>
+      </div>
+      <div class="table-wrapper">
+        <table class="table-modern">
+          <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Nominal</th><th>Aksi</th></tr></thead>
+          <tbody id="pengeluaran-list"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPP Page -->
+  <div id="spp" class="page">
+    <div class="card-modern">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-book"></i> Pembayaran SPP</div>
+        <button class="btn-modern btn-primary" onclick="openModal('modal-spp')">
+          <i class="fas fa-money-bill"></i> Bayar SPP
+        </button>
+      </div>
+      <div class="toolbar-modern">
+        <select id="spp-tahun" class="btn-modern btn-outline" onchange="loadSPP()">
+          <option value="2024">2024</option>
+          <option value="2025" selected>2025</option>
+        </select>
+      </div>
+      <div class="month-tabs-modern" id="month-tabs"></div>
+      <div class="table-wrapper">
+        <table class="table-modern">
+          <thead><tr><th>Santri</th><th>Kelas</th><th>Nominal SPP</th><th>Status</th><th>Progress</th><th>Aksi</th></tr></thead>
+          <tbody id="spp-list"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Santri Page -->
+  <div id="santri" class="page">
+    <div class="card-modern">
+      <div class="card-header">
+        <div class="card-title"><i class="fas fa-users"></i> Data Santri</div>
+        <button class="btn-modern btn-primary" onclick="openModal('modal-santri')">
+          <i class="fas fa-user-plus"></i> Tambah Santri
+        </button>
+      </div>
+      <div class="toolbar-modern">
+        <div class="search-box-modern">
+          <i class="fas fa-search"></i>
+          <input type="text" id="search-santri" placeholder="Cari santri..." onkeyup="filterSantri()">
+        </div>
+        <select id="filter-kelas" class="btn-modern btn-outline" onchange="filterSantri()">
+          <option value="">Semua Kelas</option>
+          <option>Kelas 1</option><option>Kelas 2</option><option>Kelas 3</option>
+          <option>Kelas 4</option><option>Kelas 5</option><option>Kelas 6</option>
+        </select>
+      </div>
+      <div class="table-wrapper">
+        <table class="table-modern">
+          <thead><tr><th>  .mobile-nav {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -510,7 +1301,7 @@ cat > /mnt/user-data/outputs/keuangan-pondok-mobile.html << 'HTMLEOF'
     transition: width 0.3s;
   }
 
-  /* Month Tabs */
+  /* Month Tabs */y
   .month-tabs {
     display: flex;
     gap: 6px;
@@ -1369,8 +2160,3 @@ init();
 </script>
 </body>
 </html>
-HTMLEOF
-
-echo "✅ Mobile version created successfully!"
-echo "📱 File size: $(wc -c < /mnt/user-data/outputs/keuangan-pondok-mobile.html) bytes"
-echo "📍 Location: /mnt/user-data/outputs/keuangan-pondok-mobile.html"
