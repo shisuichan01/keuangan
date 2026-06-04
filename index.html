@@ -1,231 +1,1013 @@
-cat > /mnt/user-data/outputs/keuangan-pondok.html << 'HTMLEOF'
+cat > /mnt/user-data/outputs/keuangan-pondok-mobile.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keuangan Pondok</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#1a1610">
+<title>Keuangan Pondok - Mobile</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #f5f0e8; --surface: #fffdf8; --surface2: #f0ebe0;
-    --ink: #1a1610; --ink2: #6b6050; --ink3: #a09585;
-    --gold: #b8860b; --gold-light: #f0e0a0;
-    --green: #2d6a4f; --green-light: #d8f3dc;
-    --red: #9b2226; --red-light: #ffe5e5;
-    --amber: #b5540a; --amber-light: #fff0d0;
-    --blue: #1d4e89; --blue-light: #dbeafe;
-    --border: #d8cfc0; --border2: #ebe3d5;
-    --radius: 4px; --mono: 'IBM Plex Mono', monospace; --serif: 'Lora', Georgia, serif;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--ink); font-family: var(--mono); font-size: 13px; min-height: 100vh; }
-  .app { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
-  .sidebar { background: var(--ink); color: #e8e0d0; padding: 0; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-  .sidebar-header { padding: 24px 20px 20px; border-bottom: 1px solid #2a2420; }
-  .sidebar-logo { font-family: var(--serif); font-size: 18px; font-weight: 600; color: #f0e0a0; line-height: 1.2; }
-  .sidebar-sub { font-size: 10px; color: #6b6050; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
-  .sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
-  .nav-section { padding: 8px 20px 4px; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #4a4038; }
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; cursor: pointer; color: #a09585; font-size: 12px; border-left: 2px solid transparent; transition: all 0.15s; }
-  .nav-item:hover { color: #e8e0d0; background: #1f1b17; }
-  .nav-item.active { color: #f0e0a0; background: #1f1b17; border-left-color: #b8860b; }
-  .nav-icon { width: 16px; text-align: center; font-size: 14px; }
-  .sidebar-footer { padding: 16px 20px; border-top: 1px solid #2a2420; font-size: 11px; color: #4a4038; }
-  .main { overflow: auto; }
-  .page { display: none; padding: 32px 36px; max-width: 980px; }
-  .page.active { display: block; }
-  .page-title { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
-  .page-sub { font-size: 12px; color: var(--ink3); margin-bottom: 28px; }
-  .section-title { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 14px; font-weight: 600; }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-  .card + .card { margin-top: 16px; }
-  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-  .stat-card { background: var(--surface); border: 1px solid var(--border); padding: 16px 18px; border-radius: var(--radius); }
-  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink3); margin-bottom: 8px; }
-  .stat-value { font-size: 20px; font-weight: 600; color: var(--ink); line-height: 1; }
-  .stat-value.green { color: var(--green); } .stat-value.red { color: var(--red); } .stat-value.gold { color: var(--gold); }
-  .stat-change { font-size: 10px; margin-top: 6px; color: var(--ink3); }
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  thead th { text-align: left; padding: 8px 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink3); border-bottom: 1px solid var(--border); font-weight: 600; background: var(--surface2); }
-  tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border2); vertical-align: middle; }
-  tbody tr:hover { background: var(--surface2); }
-  tbody tr:last-child td { border-bottom: none; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; }
+
+  :root {
+    --bg: #f5f0e8;
+    --surface: #fffdf8;
+    --surface2: #f0ebe0;
+    --ink: #1a1610;
+    --ink2: #6b6050;
+    --ink3: #a09585;
+    --gold: #b8860b;
+    --gold-light: #f0e0a0;
+    --green: #2d6a4f;
+    --green-light: #d8f3dc;
+    --red: #9b2226;
+    --red-light: #ffe5e5;
+    --amber: #b5540a;
+    --amber-light: #fff0d0;
+    --blue: #1d4e89;
+    --blue-light: #dbeafe;
+    --border: #d8cfc0;
+    --border2: #ebe3d5;
+    --radius: 8px;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Lora', Georgia, serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Mobile Navigation */
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--ink);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 12px 20px;
+    z-index: 100;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    border-top: 1px solid #2a2420;
+  }
+
+  .nav-icon-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+    max-width: 80px;
+  }
+
+  .nav-icon-mobile span:first-child {
+    font-size: 22px;
+  }
+
+  .nav-icon-mobile span:last-child {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-icon-mobile.active {
+    background: rgba(184, 134, 11, 0.2);
+    color: var(--gold);
+  }
+
+  .nav-icon-mobile:active {
+    transform: scale(0.95);
+  }
+
+  /* Header Mobile */
+  .mobile-header {
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 90;
+    backdrop-filter: blur(10px);
+  }
+
+  .mobile-header h1 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .menu-toggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--radius);
+  }
+
+  /* Sidebar Drawer */
+  .drawer {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    background: var(--ink);
+    color: #e8e0d0;
+    z-index: 200;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+  }
+
+  .drawer.open {
+    left: 0;
+  }
+
+  .drawer-header {
+    padding: 24px 20px;
+    border-bottom: 1px solid #2a2420;
+  }
+
+  .drawer-logo {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: #f0e0a0;
+  }
+
+  .drawer-sub {
+    font-size: 10px;
+    color: #6b6050;
+    margin-top: 4px;
+  }
+
+  .drawer-nav {
+    padding: 12px 0;
+  }
+
+  .drawer-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    cursor: pointer;
+    color: #a09585;
+    font-size: 14px;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+  }
+
+  .drawer-nav-item:active {
+    background: #1f1b17;
+  }
+
+  .drawer-nav-item.active {
+    color: #f0e0a0;
+    background: #1f1b17;
+    border-left-color: var(--gold);
+  }
+
+  .drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 199;
+    display: none;
+  }
+
+  .drawer-overlay.open {
+    display: block;
+  }
+
+  /* Main Content */
+  .main-content {
+    padding: 16px;
+    padding-bottom: 80px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .page {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .page.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Cards & Components */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .page-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .page-sub {
+    font-size: 12px;
+    color: var(--ink3);
+    margin-bottom: 20px;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ink3);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  /* Form Elements */
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ink3);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: var(--mono);
+    font-size: 14px;
+    background: var(--surface2);
+    transition: all 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid;
+    width: 100%;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: #f0e0a0;
+    border-color: var(--ink);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink2);
+    border-color: var(--border);
+  }
+
+  .btn-danger {
+    background: transparent;
+    color: var(--red);
+    border-color: var(--red-light);
+  }
+
+  /* Tables (Horizontal Scroll) */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    min-width: 500px;
+  }
+
+  thead th {
+    text-align: left;
+    padding: 10px 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border2);
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
   .badge-green { background: var(--green-light); color: var(--green); }
   .badge-red { background: var(--red-light); color: var(--red); }
   .badge-amber { background: var(--amber-light); color: var(--amber); }
   .badge-gray { background: var(--surface2); color: var(--ink3); }
-  .badge-blue { background: var(--blue-light); color: var(--blue); }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .form-group { display: flex; flex-direction: column; gap: 5px; }
-  .form-group.full { grid-column: 1/-1; }
-  label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink3); font-weight: 600; }
-  input, select, textarea { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; font-family: var(--mono); font-size: 12px; color: var(--ink); outline: none; width: 100%; transition: border-color 0.15s; }
-  input:focus, select:focus, textarea:focus { border-color: var(--gold); }
-  textarea { resize: vertical; min-height: 70px; }
-  .nominal-display { font-size: 14px; font-weight: 600; color: var(--green); margin-top: 3px; min-height: 18px; font-family: var(--mono); }
-  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius); font-family: var(--mono); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; border: 1px solid; }
-  .btn-primary { background: var(--ink); color: #f0e0a0; border-color: var(--ink); }
-  .btn-primary:hover { background: #2a2420; }
-  .btn-ghost { background: transparent; color: var(--ink2); border-color: var(--border); }
-  .btn-ghost:hover { background: var(--surface2); }
-  .btn-danger { background: transparent; color: var(--red); border-color: var(--red-light); }
-  .btn-danger:hover { background: var(--red-light); }
-  .btn-success { background: var(--green); color: #fff; border-color: var(--green); }
-  .btn-success:hover { background: #235a41; }
-  .btn-warning { background: var(--amber); color: #fff; border-color: var(--amber); }
-  .btn-warning:hover { opacity: 0.85; }
-  .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-  .toolbar-right { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
-  .search-box { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px 10px; }
-  .search-box input { border: none; background: none; padding: 0; font-size: 12px; width: 180px; }
-  .prog-wrap { height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden; margin-top: 6px; }
-  .prog-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
-  .month-tabs { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
-  .month-tab { padding: 5px 12px; font-size: 11px; cursor: pointer; border-radius: var(--radius); border: 1px solid var(--border); color: var(--ink3); background: var(--surface); transition: all 0.15s; }
-  .month-tab.active { background: var(--ink); color: #f0e0a0; border-color: var(--ink); }
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,22,16,0.6); z-index: 100; align-items: center; justify-content: center; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; width: 520px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
-  .modal-title { font-family: var(--serif); font-size: 18px; font-weight: 600; margin-bottom: 20px; }
-  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
-  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--ink); color: #f0e0a0; padding: 10px 18px; border-radius: var(--radius); font-size: 12px; z-index: 200; transform: translateY(60px); opacity: 0; transition: all 0.25s; }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 120px; margin-top: 12px; }
-  .chart-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
-  .chart-bar { width: 100%; border-radius: 2px 2px 0 0; transition: height 0.5s ease; min-height: 2px; }
-  .chart-bar-label { font-size: 9px; color: var(--ink3); }
-  .chart-bar-val { font-size: 9px; color: var(--ink2); font-weight: 600; }
-  .divider { border: none; border-top: 1px solid var(--border2); margin: 20px 0; }
-  .kwitansi { font-family: var(--serif); }
-  .kwitansi-header { text-align: center; border-bottom: 2px solid var(--ink); padding-bottom: 12px; margin-bottom: 16px; }
-  .kwitansi-title { font-size: 20px; font-weight: 600; }
-  .kwitansi-sub { font-size: 11px; color: var(--ink2); margin-top: 2px; }
-  .kwitansi-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; }
-  .kwitansi-key { color: var(--ink2); min-width: 130px; }
-  .kwitansi-val { font-weight: 600; }
-  .kwitansi-amount { font-size: 22px; font-weight: 600; color: var(--green); margin: 16px 0 8px; }
-  .kwitansi-footer { margin-top: 24px; display: flex; justify-content: flex-end; text-align: center; font-size: 12px; }
-  .kwitansi-sign { border-top: 1px solid var(--ink); padding-top: 6px; margin-top: 48px; width: 140px; }
-  .rupiah::before { content: 'Rp '; }
-  .avatar-sm { width: 28px; height: 28px; border-radius: 50%; background: var(--gold-light); color: var(--gold); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; vertical-align: middle; margin-right: 8px; }
-  .setting-section { margin-bottom: 28px; }
-  .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border2); }
-  .setting-row:last-child { border-bottom: none; }
-  .setting-info { flex: 1; }
-  .setting-label { font-weight: 600; font-size: 13px; margin-bottom: 3px; }
-  .setting-desc { font-size: 11px; color: var(--ink3); }
-  .setting-action { margin-left: 20px; }
-  .danger-zone { border: 1px solid var(--red-light); border-radius: var(--radius); padding: 20px; background: #fff8f8; }
-  .danger-zone .section-title { color: var(--red); }
-  .export-group { position: relative; display: inline-block; }
-  .export-menu { display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); min-width: 160px; z-index: 50; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-  .export-menu.open { display: block; }
-  .export-item { padding: 9px 14px; cursor: pointer; font-size: 12px; color: var(--ink2); display: flex; align-items: center; gap: 8px; transition: background 0.1s; }
-  .export-item:hover { background: var(--surface2); color: var(--ink); }
-  .info-box { background: var(--blue-light); border: 1px solid #bfdbfe; border-radius: var(--radius); padding: 12px 16px; font-size: 12px; color: var(--blue); margin-bottom: 16px; }
-  .spp-tahun-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
-  @media(max-width:700px) {
-    .app { grid-template-columns: 1fr; }
-    .sidebar { position: relative; height: auto; }
-    .stat-grid { grid-template-columns: 1fr 1fr; }
-    .form-grid { grid-template-columns: 1fr; }
-    .page { padding: 20px 16px; }
+
+  /* Toolbar Mobile */
+  .toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
   }
-  @media print {
-    .sidebar, .toolbar, .modal-overlay, .toast { display: none !important; }
-    .page { display: block !important; }
-    .page:not(.print-target) { display: none !important; }
+
+  .toolbar-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+  }
+
+  .search-box input {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Modal Mobile */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 300;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+  }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius) var(--radius) 0 0;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .modal-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+  }
+
+  .modal-title {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .modal-body {
+    padding: 16px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    padding: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 80px;
+    left: 16px;
+    right: 16px;
+    background: var(--ink);
+    color: #f0e0a0;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    text-align: center;
+    z-index: 400;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Progress Bar */
+  .prog-wrap {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .prog-fill {
+    height: 100%;
+    transition: width 0.3s;
+  }
+
+  /* Month Tabs */
+  .month-tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 8px 0;
+    margin-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .month-tab {
+    padding: 6px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .month-tab.active {
+    background: var(--ink);
+    color: #f0e0a0;
+    border-color: var(--ink);
+  }
+
+  /* Kwitansi Preview */
+  .kwitansi-preview {
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius);
+    margin-top: 16px;
+  }
+
+  /* Danger Zone */
+  .danger-zone {
+    border: 1px solid var(--red-light);
+    border-radius: var(--radius);
+    padding: 16px;
+    background: #fff8f8;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .month-tabs::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .month-tabs::-webkit-scrollbar-track {
+    background: var(--border2);
+    border-radius: 2px;
+  }
+
+  .month-tabs::-webkit-scrollbar-thumb {
+    background: var(--ink3);
+    border-radius: 2px;
   }
 </style>
 </head>
 <body>
-<div class="app">
-  <!-- SIDEBAR (same as original - keeping it concise) -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-logo">Pondok<br>Keuangan</div>
-      <div class="sidebar-sub">Manajemen Keuangan</div>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="nav-section">Utama</div>
-      <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">▦</span> Dashboard</div>
-      <div class="nav-section">Transaksi</div>
-      <div class="nav-item" onclick="showPage('pemasukan')"><span class="nav-icon">↓</span> Pemasukan</div>
-      <div class="nav-item" onclick="showPage('pengeluaran')"><span class="nav-icon">↑</span> Pengeluaran</div>
-      <div class="nav-section">SPP</div>
-      <div class="nav-item" onclick="showPage('spp')"><span class="nav-icon">≡</span> Daftar SPP</div>
-      <div class="nav-item" onclick="showPage('santri')"><span class="nav-icon">◉</span> Data Santri</div>
-      <div class="nav-section">Laporan</div>
-      <div class="nav-item" onclick="showPage('laporan')"><span class="nav-icon">□</span> Laporan Bulanan</div>
-      <div class="nav-item" onclick="showPage('kwitansi')"><span class="nav-icon">◈</span> Cetak Kwitansi</div>
-      <div class="nav-section">Sistem</div>
-      <div class="nav-item" onclick="showPage('pengaturan')"><span class="nav-icon">⚙</span> Pengaturan</div>
-    </nav>
-    <div class="sidebar-footer">v2.0 &nbsp;·&nbsp; <span id="tanggal-sidebar"></span></div>
-  </aside>
 
-  <main class="main">
-    <!-- DASHBOARD PAGE -->
-    <div class="page active" id="page-dashboard">
-      <div class="page-title">Dashboard</div>
-      <div class="page-sub" id="dash-subtitle">Ringkasan keuangan pondok</div>
-      <div class="stat-grid">
-        <div class="stat-card"><div class="stat-label">Saldo Kas</div><div class="stat-value gold" id="dash-saldo">Rp 0</div><div class="stat-change">Rekening + tunai</div></div>
-        <div class="stat-card"><div class="stat-label">Pemasukan Bulan Ini</div><div class="stat-value green" id="dash-masuk">Rp 0</div><div class="stat-change" id="dash-masuk-count">0 transaksi</div></div>
-        <div class="stat-card"><div class="stat-label">Pengeluaran Bulan Ini</div><div class="stat-value red" id="dash-keluar">Rp 0</div><div class="stat-change" id="dash-keluar-count">0 transaksi</div></div>
-        <div class="stat-card"><div class="stat-label">SPP Terkumpul</div><div class="stat-value" id="dash-spp">Rp 0</div><div class="stat-change" id="dash-spp-pct">0 dari 0 santri lunas</div></div>
+<!-- Mobile Navigation Bottom -->
+<div class="mobile-nav">
+  <div class="nav-icon-mobile active" data-page="dashboard">
+    <span>📊</span>
+    <span>Dashboard</span>
+  </div>
+  <div class="nav-icon-mobile" data-page="pemasukan">
+    <span>💰</span>
+    <span>Masuk</span>
+  </div>
+  <div class="nav-icon-mobile" data-page="pengeluaran">
+    <span>💸</span>
+    <span>Keluar</span>
+  </div>
+  <div class="nav-icon-mobile" data-page="spp">
+    <span>📚</span>
+    <span>SPP</span>
+  </div>
+  <div class="nav-icon-mobile" data-page="santri">
+    <span>👥</span>
+    <span>Santri</span>
+  </div>
+</div>
+
+<!-- Header -->
+<div class="mobile-header">
+  <button class="menu-toggle" onclick="toggleDrawer()">☰</button>
+  <h1 id="page-title">Dashboard</h1>
+  <div style="width: 40px;"></div>
+</div>
+
+<!-- Drawer Sidebar -->
+<div class="drawer-overlay" onclick="toggleDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-logo">Pondok<br>Keuangan</div>
+    <div class="drawer-sub">Manajemen Keuangan</div>
+  </div>
+  <div class="drawer-nav">
+    <div class="drawer-nav-item" data-page="dashboard">
+      <span>📊</span> Dashboard
+    </div>
+    <div class="drawer-nav-item" data-page="pemasukan">
+      <span>💰</span> Pemasukan
+    </div>
+    <div class="drawer-nav-item" data-page="pengeluaran">
+      <span>💸</span> Pengeluaran
+    </div>
+    <div class="drawer-nav-item" data-page="spp">
+      <span>📚</span> Daftar SPP
+    </div>
+    <div class="drawer-nav-item" data-page="santri">
+      <span>👥</span> Data Santri
+    </div>
+    <div class="drawer-nav-item" data-page="laporan">
+      <span>📈</span> Laporan Bulanan
+    </div>
+    <div class="drawer-nav-item" data-page="kwitansi">
+      <span>🧾</span> Cetak Kwitansi
+    </div>
+    <div class="drawer-nav-item" data-page="pengaturan">
+      <span>⚙️</span> Pengaturan
+    </div>
+  </div>
+  <div class="drawer-header" style="border-top: 1px solid #2a2420; margin-top: auto;">
+    <div style="font-size: 11px; color: #4a4038;">v2.0 Mobile</div>
+    <div style="font-size: 11px; color: #4a4038;" id="drawer-date"></div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- DASHBOARD PAGE -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-title">Dashboard</div>
+    <div class="page-sub" id="dash-subtitle">Ringkasan keuangan pondok</div>
+    
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Saldo Kas</div>
+        <div class="stat-value" style="color: var(--gold);" id="dash-saldo">Rp 0</div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-        <div class="card"><div class="section-title">Pemasukan 6 bulan terakhir</div><div class="chart-bars" id="chart-masuk"></div></div>
-        <div class="card"><div class="section-title">Pengeluaran per kategori</div><div id="chart-kategori" style="margin-top:12px"></div></div>
+      <div class="stat-card">
+        <div class="stat-label">Pemasukan</div>
+        <div class="stat-value" style="color: var(--green);" id="dash-masuk">Rp 0</div>
+        <div class="stat-change" id="dash-masuk-count" style="font-size: 10px;">0 transaksi</div>
       </div>
-      <div class="card">
-        <div class="section-title">Transaksi terbaru</div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jenis</th><th>Nominal</th></tr></thead>
-            <tbody id="table-recent"></tbody>
-          </table>
+      <div class="stat-card">
+        <div class="stat-label">Pengeluaran</div>
+        <div class="stat-value" style="color: var(--red);" id="dash-keluar">Rp 0</div>
+        <div class="stat-change" id="dash-keluar-count" style="font-size: 10px;">0 transaksi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">SPP Terkumpul</div>
+        <div class="stat-value" id="dash-spp">Rp 0</div>
+        <div class="stat-change" id="dash-spp-pct" style="font-size: 10px;">0 dari 0 lunas</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label" style="margin-bottom: 12px;">Transaksi Terbaru</div>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Nominal</th></tr></thead>
+          <tbody id="table-recent"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PEMASUKAN PAGE -->
+  <div class="page" id="page-pemasukan">
+    <div class="page-title">Pemasukan</div>
+    <div class="page-sub">Catat semua sumber pemasukan</div>
+    
+    <div class="toolbar">
+      <div class="toolbar-row">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="Cari transaksi..." id="search-masuk" oninput="filterTable('masuk')">
         </div>
       </div>
+      <div class="toolbar-row">
+        <select id="filter-masuk-kat" onchange="filterTable('masuk')" style="flex: 1;">
+          <option value="">Semua Kategori</option>
+          <option>SPP</option><option>Donasi</option><option>Infak/Sedekah</option>
+          <option>Usaha Mandiri</option><option>Bantuan Pemerintah</option><option>Lain-lain</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('modal-masuk')" style="width: auto;">+ Tambah</button>
+      </div>
     </div>
 
-    <!-- Other pages (PEMASUKAN, PENGELUARAN, SPP, SANTRI, LAPORAN, KWITANSI, PENGATURAN) -->
-    <!-- Content preserved from original for brevity - same structure -->
-    <div class="page" id="page-pemasukan"><div class="page-title">Pemasukan</div><div class="page-sub">Catat semua sumber pemasukan pondok</div><div class="toolbar"><div class="search-box"><span>⌕</span><input type="text" placeholder="Cari transaksi..." id="search-masuk" oninput="filterTable('masuk')"></div><select id="filter-masuk-kat" onchange="filterTable('masuk')" style="width:160px"><option value="">Semua Kategori</option><option>SPP</option><option>Donasi</option><option>Infak/Sedekah</option><option>Usaha Mandiri</option><option>Bantuan Pemerintah</option><option>Lain-lain</option></select><div class="toolbar-right"><div class="export-group"><button class="btn btn-ghost" onclick="toggleExportMenu('export-masuk')">⬇ Export ▾</button><div class="export-menu" id="export-masuk"><div class="export-item" onclick="exportExcel('masuk')">📊 Export Excel (.xlsx)</div><div class="export-item" onclick="exportPDF('masuk')">📄 Export PDF</div><div class="export-item" onclick="exportCSV('masuk')">📋 Export CSV</div></div></div><button class="btn btn-primary" onclick="openModal('modal-masuk')">+ Tambah Pemasukan</button></div></div><div class="card"><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Metode</th><th>Nominal</th><th></th></tr></thead><tbody id="table-masuk"></tbody></table></div></div><div style="margin-top:12px;font-size:12px;color:var(--ink3)" id="total-masuk-label"></div></div>
+    <div class="card">
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Nominal</th><th></th></tr></thead>
+          <tbody id="table-masuk"></tbody>
+        </table>
+      </div>
+      <div style="margin-top: 12px; font-size: 11px; color: var(--ink3);" id="total-masuk-label"></div>
+    </div>
+  </div>
+
+  <!-- PENGELUARAN PAGE -->
+  <div class="page" id="page-pengeluaran">
+    <div class="page-title">Pengeluaran</div>
+    <div class="page-sub">Catat semua pengeluaran pondok</div>
     
-    <div class="page" id="page-pengeluaran"><div class="page-title">Pengeluaran</div><div class="page-sub">Catat semua pengeluaran dan belanja pondok</div><div class="toolbar"><div class="search-box"><span>⌕</span><input type="text" placeholder="Cari transaksi..." id="search-keluar" oninput="filterTable('keluar')"></div><select id="filter-keluar-kat" onchange="filterTable('keluar')" style="width:160px"><option value="">Semua Kategori</option><option>Operasional</option><option>Gaji & Honor</option><option>Pembangunan</option><option>Pendidikan</option><option>Konsumsi</option><option>Lain-lain</option></select><div class="toolbar-right"><div class="export-group"><button class="btn btn-ghost" onclick="toggleExportMenu('export-keluar')">⬇ Export ▾</button><div class="export-menu" id="export-keluar"><div class="export-item" onclick="exportExcel('keluar')">📊 Export Excel (.xlsx)</div><div class="export-item" onclick="exportPDF('keluar')">📄 Export PDF</div><div class="export-item" onclick="exportCSV('keluar')">📋 Export CSV</div></div></div><button class="btn btn-primary" onclick="openModal('modal-keluar')">+ Tambah Pengeluaran</button></div></div><div class="card"><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Kategori</th><th>Metode</th><th>Nominal</th><th></th></tr></thead><tbody id="table-keluar"></tbody></table></div></div><div style="margin-top:12px;font-size:12px;color:var(--ink3)" id="total-keluar-label"></div></div>
+    <div class="toolbar">
+      <div class="toolbar-row">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="Cari transaksi..." id="search-keluar" oninput="filterTable('keluar')">
+        </div>
+      </div>
+      <div class="toolbar-row">
+        <select id="filter-keluar-kat" onchange="filterTable('keluar')" style="flex: 1;">
+          <option value="">Semua Kategori</option>
+          <option>Operasional</option><option>Gaji & Honor</option><option>Pembangunan</option>
+          <option>Pendidikan</option><option>Konsumsi</option><option>Lain-lain</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal('modal-keluar')" style="width: auto;">+ Tambah</button>
+      </div>
+    </div>
 
-    <div class="page" id="page-spp"><div class="page-title">Pembayaran SPP</div><div class="page-sub">Kelola dan pantau status SPP seluruh santri</div><div class="spp-tahun-wrap"><label style="margin:0">Tahun:</label><select id="spp-tahun-sel" onchange="changeSPPTahun(this.value)" style="width:100px"></select></div><div class="month-tabs" id="month-tabs"></div><div class="stat-grid" style="grid-template-columns:repeat(3,1fr)"><div class="stat-card"><div class="stat-label">Lunas</div><div class="stat-value green" id="spp-lunas-count">0</div><div class="stat-change" id="spp-lunas-rp">Rp 0</div></div><div class="stat-card"><div class="stat-label">Belum Bayar</div><div class="stat-value red" id="spp-belum-count">0</div><div class="stat-change" id="spp-belum-rp">Rp 0</div></div><div class="stat-card"><div class="stat-label">Cicilan</div><div class="stat-value gold" id="spp-cicil-count">0</div><div class="stat-change" id="spp-cicil-rp">Rp 0</div></div></div><div class="toolbar"><select id="filter-spp-status" onchange="renderSPP()" style="width:160px"><option value="">Semua Status</option><option value="lunas">Lunas</option><option value="belum">Belum Bayar</option><option value="cicil">Cicilan</option></select><div class="toolbar-right"><div class="export-group"><button class="btn btn-ghost" onclick="toggleExportMenu('export-spp')">⬇ Export ▾</button><div class="export-menu" id="export-spp"><div class="export-item" onclick="exportSPPExcel()">📊 Export Excel (.xlsx)</div><div class="export-item" onclick="exportSPPPDF()">📄 Export PDF</div><div class="export-item" onclick="exportSPP()">📋 Export CSV</div></div></div><button class="btn btn-primary" onclick="openModal('modal-bayar-spp')">+ Bayar SPP</button></div></div><div class="card"><div class="table-wrap"><table><thead><tr><th>Santri</th><th>Kelas</th><th>SPP/bulan</th><th>Dibayar</th><th>Progres</th><th>Status</th><th>Tgl Bayar</th><th></th></tr></thead><tbody id="table-spp"></tbody></table></div></div></div>
+    <div class="card">
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Nominal</th><th></th></tr></thead>
+          <tbody id="table-keluar"></tbody>
+        </table>
+      </div>
+      <div style="margin-top: 12px; font-size: 11px; color: var(--ink3);" id="total-keluar-label"></div>
+    </div>
+  </div>
 
-    <div class="page" id="page-santri"><div class="page-title">Data Santri</div><div class="page-sub">Kelola data seluruh santri pondok</div><div class="toolbar"><div class="search-box"><span>⌕</span><input type="text" placeholder="Cari nama santri..." id="search-santri" oninput="renderSantriTable()"></div><select id="filter-kelas" onchange="renderSantriTable()" style="width:140px"><option value="">Semua Kelas</option><option>Kelas 1</option><option>Kelas 2</option><option>Kelas 3</option><option>Kelas 4</option><option>Kelas 5</option><option>Kelas 6</option></select><div class="toolbar-right"><div class="export-group"><button class="btn btn-ghost" onclick="toggleExportMenu('export-santri')">⬇ Export ▾</button><div class="export-menu" id="export-santri"><div class="export-item" onclick="exportSantriExcel()">📊 Export Excel (.xlsx)</div><div class="export-item" onclick="exportSantriPDF()">📄 Export PDF</div><div class="export-item" onclick="exportSantriCSV()">📋 Export CSV</div></div></div><button class="btn btn-primary" onclick="openModal('modal-santri')">+ Tambah Santri</button></div></div><div class="card"><div class="table-wrap"><table><thead><tr><th>Nama Santri</th><th>Kelas</th><th>Wali</th><th>No. Telp</th><th>SPP/bulan</th><th>Terbilang</th><th>Status Bln Ini</th><th></th></tr></thead><tbody id="table-santri"></tbody></table></div></div></div>
+  <!-- SPP PAGE -->
+  <div class="page" id="page-spp">
+    <div class="page-title">Pembayaran SPP</div>
+    <div class="page-sub">Kelola status SPP santri</div>
+    
+    <div class="toolbar-row" style="margin-bottom: 12px;">
+      <select id="spp-tahun-sel" onchange="changeSPPTahun(this.value)" style="flex: 1;"></select>
+      <button class="btn btn-primary" onclick="openModal('modal-bayar-spp')" style="width: auto;">+ Bayar</button>
+    </div>
 
-    <div class="page" id="page-laporan"><div class="page-title">Laporan Bulanan</div><div class="page-sub">Ringkasan keuangan per bulan</div><div class="toolbar"><select id="lap-bulan" onchange="renderLaporan()" style="width:140px"></select><select id="lap-tahun" onchange="renderLaporan()" style="width:100px"></select><div class="toolbar-right"><div class="export-group"><button class="btn btn-ghost" onclick="toggleExportMenu('export-laporan')">⬇ Export ▾</button><div class="export-menu" id="export-laporan"><div class="export-item" onclick="exportLaporanExcel()">📊 Export Excel (.xlsx)</div><div class="export-item" onclick="exportLaporanPDF()">📄 Export PDF</div></div></div><button class="btn btn-ghost" onclick="window.print()">⎙ Cetak</button></div></div><div class="stat-grid"><div class="stat-card"><div class="stat-label">Total Pemasukan</div><div class="stat-value green" id="lap-masuk">Rp 0</div></div><div class="stat-card"><div class="stat-label">Total Pengeluaran</div><div class="stat-value red" id="lap-keluar">Rp 0</div></div><div class="stat-card"><div class="stat-label">Selisih (Surplus)</div><div class="stat-value gold" id="lap-surplus">Rp 0</div></div><div class="stat-card"><div class="stat-label">SPP Terkumpul</div><div class="stat-value" id="lap-spp">Rp 0</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><div class="card"><div class="section-title">Rincian Pemasukan</div><div id="lap-detail-masuk"></div></div><div class="card"><div class="section-title">Rincian Pengeluaran</div><div id="lap-detail-keluar"></div></div></div><div class="card" style="margin-top:16px"><div class="section-title">Semua Transaksi Bulan Ini</div><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Jenis</th><th>Kategori</th><th>Nominal</th></tr></thead><tbody id="lap-table"></tbody></table></div></div></div>
+    <div class="month-tabs" id="month-tabs"></div>
 
-    <div class="page" id="page-kwitansi"><div class="page-title">Cetak Kwitansi</div><div class="page-sub">Buat dan cetak kwitansi pembayaran SPP</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start"><div class="card"><div class="section-title">Pilih Pembayaran</div><div class="form-grid" style="grid-template-columns:1fr"><div class="form-group"><label>Nama Pondok</label><input type="text" id="kwit-pondok" value="Pondok Pesantren" oninput="updateKwitansi()"></div><div class="form-group"><label>Santri</label><select id="kwit-santri" onchange="updateKwitansi()"><option value="">-- Pilih Santri --</option></select></div><div class="form-group"><label>Bulan</label><select id="kwit-bulan" onchange="updateKwitansi()"></select></div><div class="form-group"><label>Nominal (Rp)</label><input type="text" id="kwit-nominal" placeholder="500.000" oninput="handleNominalInput(this,'kwit-nominal-display','kw-nominal','kw-terbilang')"><div class="nominal-display" id="kwit-nominal-display"></div></div><div class="form-group"><label>Keterangan</label><input type="text" id="kwit-ket" value="Pembayaran SPP" oninput="updateKwitansi()"></div><div class="form-group"><label>No. Kwitansi</label><input type="text" id="kwit-no" oninput="updateKwitansi()"></div></div><div style="margin-top:16px;display:flex;gap:8px"><button class="btn btn-primary" onclick="window.print()">⎙ Cetak Kwitansi</button><button class="btn btn-ghost" onclick="exportKwitansiPDF()">📄 Export PDF</button></div></div><div class="card kwitansi print-target" id="preview-kwitansi"><div class="kwitansi-header"><div class="kwitansi-title">KWITANSI PEMBAYARAN</div><div class="kwitansi-sub" id="kw-pondok-name">Pondok Pesantren</div></div><div class="kwitansi-row"><span class="kwitansi-key">No. Kwitansi</span><span class="kwitansi-val" id="kw-no">—</span></div><div class="kwitansi-row"><span class="kwitansi-key">Tanggal</span><span class="kwitansi-val" id="kw-tgl">—</span></div><div class="kwitansi-row"><span class="kwitansi-key">Nama Santri</span><span class="kwitansi-val" id="kw-nama">—</span></div><div class="kwitansi-row"><span class="kwitansi-key">Kelas</span><span class="kwitansi-val" id="kw-kelas">—</span></div><div class="kwitansi-row"><span class="kwitansi-key">Keterangan</span><span class="kwitansi-val" id="kw-ket">—</span></div><div class="kwitansi-row"><span class="kwitansi-key">Bulan</span><span class="kwitansi-val" id="kw-bulan">—</span></div><hr class="divider"><div style="font-size:11px;color:var(--ink3)">Telah diterima pembayaran sebesar:</div><div class="kwitansi-amount" id="kw-nominal">Rp 0</div><div style="font-size:11px;color:var(--ink2);font-family:var(--serif);font-style:italic" id="kw-terbilang">Nol rupiah</div><div class="kwitansi-footer"><div><div style="font-size:11px;color:var(--ink2)">Bendahara Pondok</div><div class="kwitansi-sign">(_________________)</div></div></div></div></div></div>
+    <div class="stat-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="stat-card"><div class="stat-label">Lunas</div><div class="stat-value green" id="spp-lunas-count">0</div></div>
+      <div class="stat-card"><div class="stat-label">Belum</div><div class="stat-value red" id="spp-belum-count">0</div></div>
+      <div class="stat-card"><div class="stat-label">Cicil</div><div class="stat-value gold" id="spp-cicil-count">0</div></div>
+    </div>
 
-    <div class="page" id="page-pengaturan"><div class="page-title">Pengaturan</div><div class="page-sub">Konfigurasi aplikasi, backup, dan pengelolaan data</div><div class="card setting-section" style="margin-bottom:16px"><div class="section-title">Informasi Pondok</div><div class="form-grid"><div class="form-group"><label>Nama Pondok</label><input type="text" id="cfg-nama" placeholder="Nama Pondok Pesantren" oninput="saveConfig()"></div><div class="form-group"><label>Kota</label><input type="text" id="cfg-kota" placeholder="Bangil, Jawa Timur" oninput="saveConfig()"></div><div class="form-group full"><label>Alamat</label><input type="text" id="cfg-alamat" placeholder="Jalan / RT / RW / Kelurahan" oninput="saveConfig()"></div><div class="form-group"><label>No. Telp Pondok</label><input type="text" id="cfg-telp" placeholder="0341-xxxxxx" oninput="saveConfig()"></div><div class="form-group"><label>Nama Kepala Pondok</label><input type="text" id="cfg-kepala" placeholder="KH. ..." oninput="saveConfig()"></div><div class="form-group"><label>Nama Bendahara</label><input type="text" id="cfg-bendahara" placeholder="Nama Bendahara" oninput="saveConfig()"></div></div><div style="margin-top:14px"><button class="btn btn-success" onclick="saveConfig();toast('Pengaturan disimpan ✓')">✓ Simpan Pengaturan</button></div></div><div class="card setting-section" style="margin-bottom:16px"><div class="section-title">Konfigurasi SPP</div><div class="setting-row"><div class="setting-info"><div class="setting-label">SPP Default Per Bulan</div><div class="setting-desc">Nominal SPP yang digunakan otomatis saat tambah santri baru</div></div><div class="setting-action" style="display:flex;align-items:center;gap:10px"><input type="text" id="cfg-spp-default" style="width:160px" placeholder="500.000" oninput="handleNominalInput(this,'cfg-spp-display')"><button class="btn btn-ghost" onclick="saveConfig();toast('SPP default disimpan ✓')">Simpan</button></div></div><div style="margin-left:0;padding-top:6px"><div class="nominal-display" id="cfg-spp-display"></div></div></div><div class="card setting-section" style="margin-bottom:16px"><div class="section-title">Backup & Restore Data</div><div class="info-box">💡 Backup data secara rutin untuk menghindari kehilangan data. File backup berformat JSON dan dapat dipulihkan kapan saja.</div><div class="setting-row"><div class="setting-info"><div class="setting-label">Backup Data Lengkap</div><div class="setting-desc">Unduh semua data (santri, transaksi, SPP) sebagai file JSON</div></div><div class="setting-action"><button class="btn btn-primary" onclick="backupData()">⬇ Download Backup</button></div></div><div class="setting-row"><div class="setting-info"><div class="setting-label">Backup ke Excel</div><div class="setting-desc">Export semua data ke file Excel multi-sheet</div></div><div class="setting-action"><button class="btn btn-ghost" onclick="backupExcel()">📊 Export Excel Lengkap</button></div></div><div class="setting-row"><div class="setting-info"><div class="setting-label">Pulihkan Data (Restore)</div><div class="setting-desc">Upload file backup JSON untuk memulihkan data</div></div><div class="setting-action"><label class="btn btn-ghost" style="cursor:pointer">📂 Pilih File Backup<input type="file" accept=".json" onchange="restoreData(this)" style="display:none"></label></div></div><div style="margin-top:8px;font-size:11px;color:var(--ink3)" id="backup-info"></div></div><div class="card setting-section" style="margin-bottom:16px"><div class="section-title">Statistik Data</div><div id="stat-data-detail" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px"></div></div><div class="danger-zone"><div class="section-title">⚠ Zona Berbahaya</div><div class="setting-row"><div class="setting-info"><div class="setting-label" style="color:var(--red)">Hapus Semua Transaksi</div><div class="setting-desc">Hapus seluruh data pemasukan dan pengeluaran. Data santri dan SPP tetap ada.</div></div><div class="setting-action"><button class="btn btn-danger" onclick="confirmDeleteTransaksi()">Hapus Transaksi</button></div></div><div class="setting-row"><div class="setting-info"><div class="setting-label" style="color:var(--red)">Hapus Semua Data SPP</div><div class="setting-desc">Hapus seluruh riwayat pembayaran SPP. Data santri tetap ada.</div></div><div class="setting-action"><button class="btn btn-danger" onclick="confirmDeleteSPP()">Hapus Data SPP</button></div></div><div class="setting-row"><div class="setting-info"><div class="setting-label" style="color:var(--red)">Reset Seluruh Data Aplikasi</div><div class="setting-desc">Hapus SEMUA data termasuk santri, transaksi, dan SPP. Tindakan ini tidak dapat dibatalkan!</div></div><div class="setting-action"><button class="btn btn-danger" onclick="confirmResetAll()">🗑 Reset Semua Data</button></div></div></div></div>
-  </main>
+    <div class="card">
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Santri</th><th>Status</th><th>Progres</th><th></th></tr></thead>
+          <tbody id="table-spp"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SANTRI PAGE -->
+  <div class="page" id="page-santri">
+    <div class="page-title">Data Santri</div>
+    <div class="page-sub">Kelola data seluruh santri</div>
+    
+    <div class="toolbar">
+      <div class="toolbar-row">
+        <div class="search-box" style="flex: 1;">
+          <span>🔍</span>
+          <input type="text" placeholder="Cari santri..." id="search-santri" oninput="renderSantriTable()">
+        </div>
+        <button class="btn btn-primary" onclick="openModal('modal-santri')" style="width: auto;">+ Tambah</button>
+      </div>
+      <select id="filter-kelas" onchange="renderSantriTable()">
+        <option value="">Semua Kelas</option>
+        <option>Kelas 1</option><option>Kelas 2</option><option>Kelas 3</option>
+        <option>Kelas 4</option><option>Kelas 5</option><option>Kelas 6</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Nama</th><th>Kelas</th><th>SPP</th><th></th></tr></thead>
+          <tbody id="table-santri"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAPORAN PAGE -->
+  <div class="page" id="page-laporan">
+    <div class="page-title">Laporan Bulanan</div>
+    <div class="page-sub">Ringkasan keuangan per bulan</div>
+    
+    <div class="toolbar-row" style="gap: 8px; margin-bottom: 16px;">
+      <select id="lap-bulan" onchange="renderLaporan()" style="flex: 1;"></select>
+      <select id="lap-tahun" onchange="renderLaporan()" style="flex: 1;"></select>
+      <button class="btn btn-ghost" onclick="window.print()" style="width: auto;">🖨️</button>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-label">Pemasukan</div><div class="stat-value green" id="lap-masuk">Rp 0</div></div>
+      <div class="stat-card"><div class="stat-label">Pengeluaran</div><div class="stat-value red" id="lap-keluar">Rp 0</div></div>
+      <div class="stat-card"><div class="stat-label">Surplus</div><div class="stat-value gold" id="lap-surplus">Rp 0</div></div>
+      <div class="stat-card"><div class="stat-label">SPP</div><div class="stat-value" id="lap-spp">Rp 0</div></div>
+    </div>
+
+    <div class="card">
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Nominal</th></tr></thead>
+          <tbody id="lap-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- KWITANSI PAGE -->
+  <div class="page" id="page-kwitansi">
+    <div class="page-title">Cetak Kwitansi</div>
+    <div class="page-sub">Buat kwitansi pembayaran SPP</div>
+    
+    <div class="card">
+      <div class="form-group">
+        <label>Santri</label>
+        <select id="kwit-santri" onchange="updateKwitansi()"></select>
+      </div>
+      <div class="form-group">
+        <label>Bulan</label>
+        <select id="kwit-bulan" onchange="updateKwitansi()"></select>
+      </div>
+      <div class="form-group">
+        <label>Nominal (Rp)</label>
+        <input type="text" id="kwit-nominal" placeholder="500.000" oninput="handleNominalInput(this,'kwit-nominal-display','kw-nominal','kw-terbilang')">
+        <div class="nominal-display" id="kwit-nominal-display" style="font-size: 11px;"></div>
+      </div>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Cetak Kwitansi</button>
+    </div>
+
+    <div class="kwitansi-preview" id="preview-kwitansi">
+      <div style="text-align: center; border-bottom: 2px solid #1a1610; padding-bottom: 12px; margin-bottom: 16px;">
+        <div style="font-size: 18px; font-weight: 600;">KWITANSI PEMBAYARAN</div>
+        <div style="font-size: 11px; color: #6b6050;" id="kw-pondok-name">Pondok Pesantren</div>
+      </div>
+      <div style="margin-bottom: 8px;"><strong>No. Kwitansi:</strong> <span id="kw-no">—</span></div>
+      <div style="margin-bottom: 8px;"><strong>Tanggal:</strong> <span id="kw-tgl">—</span></div>
+      <div style="margin-bottom: 8px;"><strong>Santri:</strong> <span id="kw-nama">—</span></div>
+      <div style="margin-bottom: 8px;"><strong>Bulan:</strong> <span id="kw-bulan">—</span></div>
+      <hr style="margin: 16px 0;">
+      <div style="font-size: 20px; font-weight: 600; color: var(--green);" id="kw-nominal">Rp 0</div>
+      <div style="font-size: 11px; font-style: italic;" id="kw-terbilang">—</div>
+    </div>
+  </div>
+
+  <!-- PENGATURAN PAGE -->
+  <div class="page" id="page-pengaturan">
+    <div class="page-title">Pengaturan</div>
+    <div class="page-sub">Konfigurasi aplikasi</div>
+    
+    <div class="card">
+      <div class="stat-label">Informasi Pondok</div>
+      <div class="form-group">
+        <label>Nama Pondok</label>
+        <input type="text" id="cfg-nama" placeholder="Nama Pondok" oninput="saveConfig()">
+      </div>
+      <div class="form-group">
+        <label>Kota</label>
+        <input type="text" id="cfg-kota" placeholder="Kota" oninput="saveConfig()">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="stat-label">Backup & Restore</div>
+      <div class="toolbar-row">
+        <button class="btn btn-primary" onclick="backupData()" style="flex: 1;">💾 Backup</button>
+        <label class="btn btn-ghost" style="flex: 1; text-align: center;">📂 Restore<input type="file" accept=".json" onchange="restoreData(this)" style="display: none;"></label>
+      </div>
+    </div>
+
+    <div class="danger-zone">
+      <div class="stat-label" style="color: var(--red); margin-bottom: 12px;">⚠️ Danger Zone</div>
+      <div class="toolbar-row">
+        <button class="btn btn-danger" onclick="confirmDeleteTransaksi()" style="flex: 1;">Hapus Transaksi</button>
+        <button class="btn btn-danger" onclick="confirmDeleteSPP()" style="flex: 1;">Hapus SPP</button>
+      </div>
+      <button class="btn btn-danger" onclick="confirmResetAll()" style="margin-top: 8px;">🗑️ Reset Semua Data</button>
+    </div>
+  </div>
 </div>
 
 <!-- MODALS -->
-<div class="modal-overlay" id="modal-masuk"><div class="modal"><div class="modal-title">Tambah Pemasukan</div><div class="form-grid"><div class="form-group"><label>Tanggal</label><input type="date" id="m-masuk-tgl"></div><div class="form-group"><label>Kategori</label><select id="m-masuk-kat"><option>SPP</option><option>Donasi</option><option>Infak/Sedekah</option><option>Usaha Mandiri</option><option>Bantuan Pemerintah</option><option>Lain-lain</option></select></div><div class="form-group full"><label>Keterangan</label><input type="text" id="m-masuk-ket" placeholder="Deskripsi pemasukan..."></div><div class="form-group"><label>Nominal (Rp)</label><input type="text" id="m-masuk-nominal" placeholder="0" oninput="handleNominalInput(this,'m-masuk-nominal-disp')"><div class="nominal-display" id="m-masuk-nominal-disp"></div></div><div class="form-group"><label>Metode</label><select id="m-masuk-metode"><option>Tunai</option><option>Transfer</option><option>Cek/Giro</option></select></div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('modal-masuk')">Batal</button><button class="btn btn-primary" onclick="saveMasuk()">Simpan</button></div></div></div>
+<div class="modal-overlay" id="modal-masuk">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Tambah Pemasukan</div>
+      <button class="btn-ghost" onclick="closeModal('modal-masuk')" style="border: none; font-size: 24px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Tanggal</label><input type="date" id="m-masuk-tgl"></div>
+      <div class="form-group"><label>Kategori</label><select id="m-masuk-kat"><option>SPP</option><option>Donasi</option><option>Infak/Sedekah</option><option>Usaha Mandiri</option><option>Bantuan Pemerintah</option><option>Lain-lain</option></select></div>
+      <div class="form-group"><label>Keterangan</label><input type="text" id="m-masuk-ket" placeholder="Deskripsi..."></div>
+      <div class="form-group"><label>Nominal (Rp)</label><input type="text" id="m-masuk-nominal" placeholder="0" oninput="handleNominalInput(this,'m-masuk-nominal-disp')"><div class="nominal-display" id="m-masuk-nominal-disp"></div></div>
+      <div class="form-group"><label>Metode</label><select id="m-masuk-metode"><option>Tunai</option><option>Transfer</option></select></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-masuk')">Batal</button>
+      <button class="btn btn-primary" onclick="saveMasuk()">Simpan</button>
+    </div>
+  </div>
+</div>
 
-<div class="modal-overlay" id="modal-keluar"><div class="modal"><div class="modal-title">Tambah Pengeluaran</div><div class="form-grid"><div class="form-group"><label>Tanggal</label><input type="date" id="m-keluar-tgl"></div><div class="form-group"><label>Kategori</label><select id="m-keluar-kat"><option>Operasional</option><option>Gaji & Honor</option><option>Pembangunan</option><option>Pendidikan</option><option>Konsumsi</option><option>Lain-lain</option></select></div><div class="form-group full"><label>Keterangan</label><input type="text" id="m-keluar-ket" placeholder="Deskripsi pengeluaran..."></div><div class="form-group"><label>Nominal (Rp)</label><input type="text" id="m-keluar-nominal" placeholder="0" oninput="handleNominalInput(this,'m-keluar-nominal-disp')"><div class="nominal-display" id="m-keluar-nominal-disp"></div></div><div class="form-group"><label>Metode</label><select id="m-keluar-metode"><option>Tunai</option><option>Transfer</option><option>Cek/Giro</option></select></div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('modal-keluar')">Batal</button><button class="btn btn-primary" onclick="saveKeluar()">Simpan</button></div></div></div>
+<div class="modal-overlay" id="modal-keluar">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Tambah Pengeluaran</div>
+      <button class="btn-ghost" onclick="closeModal('modal-keluar')" style="border: none; font-size: 24px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Tanggal</label><input type="date" id="m-keluar-tgl"></div>
+      <div class="form-group"><label>Kategori</label><select id="m-keluar-kat"><option>Operasional</option><option>Gaji & Honor</option><option>Pembangunan</option><option>Pendidikan</option><option>Konsumsi</option><option>Lain-lain</option></select></div>
+      <div class="form-group"><label>Keterangan</label><input type="text" id="m-keluar-ket" placeholder="Deskripsi..."></div>
+      <div class="form-group"><label>Nominal (Rp)</label><input type="text" id="m-keluar-nominal" placeholder="0" oninput="handleNominalInput(this,'m-keluar-nominal-disp')"><div class="nominal-display" id="m-keluar-nominal-disp"></div></div>
+      <div class="form-group"><label>Metode</label><select id="m-keluar-metode"><option>Tunai</option><option>Transfer</option></select></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-keluar')">Batal</button>
+      <button class="btn btn-primary" onclick="saveKeluar()">Simpan</button>
+    </div>
+  </div>
+</div>
 
-<div class="modal-overlay" id="modal-bayar-spp"><div class="modal"><div class="modal-title">Catat Pembayaran SPP</div><div class="form-grid"><div class="form-group full"><label>Santri</label><select id="m-spp-santri"></select></div><div class="form-group"><label>Bulan</label><select id="m-spp-bulan"></select></div><div class="form-group"><label>Tahun</label><select id="m-spp-tahun"></select></div><div class="form-group"><label>Nominal (Rp)</label><input type="text" id="m-spp-nominal" placeholder="0" oninput="handleNominalInput(this,'m-spp-nominal-disp')"><div class="nominal-display" id="m-spp-nominal-disp"></div></div><div class="form-group"><label>Status</label><select id="m-spp-status"><option value="lunas">Lunas</option><option value="cicil">Cicilan</option></select></div><div class="form-group"><label>Tanggal Bayar</label><input type="date" id="m-spp-tgl"></div><div class="form-group"><label>Metode</label><select id="m-spp-metode"><option>Tunai</option><option>Transfer</option></select></div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('modal-bayar-spp')">Batal</button><button class="btn btn-primary" onclick="saveSPP()">Simpan</button></div></div></div>
+<div class="modal-overlay" id="modal-bayar-spp">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Bayar SPP</div>
+      <button class="btn-ghost" onclick="closeModal('modal-bayar-spp')" style="border: none; font-size: 24px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Santri</label><select id="m-spp-santri"></select></div>
+      <div class="form-group"><label>Bulan</label><select id="m-spp-bulan"></select></div>
+      <div class="form-group"><label>Tahun</label><select id="m-spp-tahun"></select></div>
+      <div class="form-group"><label>Nominal</label><input type="text" id="m-spp-nominal" oninput="handleNominalInput(this,'m-spp-nominal-disp')"><div class="nominal-display" id="m-spp-nominal-disp"></div></div>
+      <div class="form-group"><label>Status</label><select id="m-spp-status"><option value="lunas">Lunas</option><option value="cicil">Cicilan</option></select></div>
+      <div class="form-group"><label>Tanggal Bayar</label><input type="date" id="m-spp-tgl"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-bayar-spp')">Batal</button>
+      <button class="btn btn-primary" onclick="saveSPP()">Simpan</button>
+    </div>
+  </div>
+</div>
 
-<div class="modal-overlay" id="modal-santri"><div class="modal"><div class="modal-title">Tambah Data Santri</div><div class="form-grid"><div class="form-group full"><label>Nama Lengkap</label><input type="text" id="m-s-nama" placeholder="Nama santri..."></div><div class="form-group"><label>Kelas</label><select id="m-s-kelas"><option>Kelas 1</option><option>Kelas 2</option><option>Kelas 3</option><option>Kelas 4</option><option>Kelas 5</option><option>Kelas 6</option></select></div><div class="form-group"><label>SPP per Bulan (Rp)</label><input type="text" id="m-s-spp" placeholder="500.000" oninput="handleNominalInput(this,'m-s-spp-disp')"><div class="nominal-display" id="m-s-spp-disp"></div></div><div class="form-group"><label>Nama Wali</label><input type="text" id="m-s-wali" placeholder="Nama wali santri..."></div><div class="form-group"><label>No. Telp Wali</label><input type="text" id="m-s-telp" placeholder="08xx..."></div><div class="form-group"><label>Asal Daerah</label><input type="text" id="m-s-asal" placeholder="Kota/Kabupaten..."></div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('modal-santri')">Batal</button><button class="btn btn-primary" onclick="saveSantri()">Simpan</button></div></div></div>
+<div class="modal-overlay" id="modal-santri">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Tambah Santri</div>
+      <button class="btn-ghost" onclick="closeModal('modal-santri')" style="border: none; font-size: 24px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Nama Lengkap</label><input type="text" id="m-s-nama" placeholder="Nama santri..."></div>
+      <div class="form-group"><label>Kelas</label><select id="m-s-kelas"><option>Kelas 1</option><option>Kelas 2</option><option>Kelas 3</option><option>Kelas 4</option><option>Kelas 5</option><option>Kelas 6</option></select></div>
+      <div class="form-group"><label>SPP per Bulan</label><input type="text" id="m-s-spp" placeholder="500.000" oninput="handleNominalInput(this,'m-s-spp-disp')"><div class="nominal-display" id="m-s-spp-disp"></div></div>
+      <div class="form-group"><label>Nama Wali</label><input type="text" id="m-s-wali" placeholder="Nama wali..."></div>
+      <div class="form-group"><label>No. Telp</label><input type="text" id="m-s-telp" placeholder="08xx..."></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-santri')">Batal</button>
+      <button class="btn btn-primary" onclick="saveSantri()">Simpan</button>
+    </div>
+  </div>
+</div>
 
-<div class="modal-overlay" id="modal-konfirmasi"><div class="modal" style="width:420px"><div class="modal-title" id="konfirmasi-title">Konfirmasi</div><p id="konfirmasi-msg" style="color:var(--ink2);font-size:13px;line-height:1.6;margin-bottom:8px"></p><p style="font-size:11px;color:var(--red);margin-top:8px">⚠ Tindakan ini tidak dapat dibatalkan. Pastikan sudah melakukan backup data.</p><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('modal-konfirmasi')">Batal</button><button class="btn btn-danger" id="konfirmasi-ok">Ya, Hapus</button></div></div></div>
+<div class="modal-overlay" id="modal-konfirmasi">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="konfirmasi-title">Konfirmasi</div>
+      <button class="btn-ghost" onclick="closeModal('modal-konfirmasi')" style="border: none; font-size: 24px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <p id="konfirmasi-msg" style="color: var(--ink2);"></p>
+      <p style="font-size: 11px; color: var(--red); margin-top: 12px;">⚠️ Tindakan ini tidak dapat dibatalkan!</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-konfirmasi')">Batal</button>
+      <button class="btn btn-danger" id="konfirmasi-ok">Ya, Hapus</button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ==================== STATE ====================
+// Same state and functions as original, with mobile optimizations
 let state = JSON.parse(localStorage.getItem('pondok_data') || 'null') || {
   santri: [
     { id:1, nama:"Ahmad Fauzi", kelas:"Kelas 3", wali:"Bapak Fauzi", telp:"0812-3456-7890", spp:500000, asal:"Pasuruan", aktif:true },
@@ -241,18 +1023,12 @@ let state = JSON.parse(localStorage.getItem('pondok_data') || 'null') || {
     { id:3, tgl:"2025-06-03", ket:"Donasi dari Bapak H. Slamet", kat:"Donasi", nominal:2000000, metode:"Transfer" },
     { id:4, tgl:"2025-06-04", ket:"Infak Jumat", kat:"Infak/Sedekah", nominal:350000, metode:"Tunai" },
     { id:5, tgl:"2025-06-05", ket:"Hasil penjualan koperasi", kat:"Usaha Mandiri", nominal:1200000, metode:"Tunai" },
-    { id:6, tgl:"2025-05-10", ket:"SPP Bulan Mei - Ahmad Fauzi", kat:"SPP", nominal:500000, metode:"Tunai" },
-    { id:7, tgl:"2025-05-15", ket:"Donasi yayasan Al-Falah", kat:"Donasi", nominal:5000000, metode:"Transfer" },
-    { id:8, tgl:"2025-04-05", ket:"Bantuan operasional Kemenag", kat:"Bantuan Pemerintah", nominal:10000000, metode:"Transfer" },
   ],
   pengeluaran: [
     { id:1, tgl:"2025-06-01", ket:"Listrik dan air bulan Juni", kat:"Operasional", nominal:850000, metode:"Transfer" },
     { id:2, tgl:"2025-06-03", ket:"Honor ustadz Juni - 5 orang", kat:"Gaji & Honor", nominal:3000000, metode:"Tunai" },
     { id:3, tgl:"2025-06-05", ket:"Pembelian buku kitab santri", kat:"Pendidikan", nominal:750000, metode:"Tunai" },
     { id:4, tgl:"2025-06-10", ket:"Konsumsi santri mingguan", kat:"Konsumsi", nominal:1200000, metode:"Tunai" },
-    { id:5, tgl:"2025-05-01", ket:"Cat dan perbaikan asrama", kat:"Pembangunan", nominal:2500000, metode:"Transfer" },
-    { id:6, tgl:"2025-05-05", ket:"Honor ustadz Mei", kat:"Gaji & Honor", nominal:3000000, metode:"Tunai" },
-    { id:7, tgl:"2025-04-10", ket:"Pembelian alat tulis", kat:"Pendidikan", nominal:450000, metode:"Tunai" },
   ],
   sppBayar: [
     { id:1, santriId:1, bulan:"Juni", tahun:2025, nominal:500000, status:"lunas", tgl:"2025-06-01", metode:"Tunai" },
@@ -261,7 +1037,7 @@ let state = JSON.parse(localStorage.getItem('pondok_data') || 'null') || {
     { id:4, santriId:4, bulan:"Juni", tahun:2025, nominal:500000, status:"lunas", tgl:"2025-06-01", metode:"Tunai" },
     { id:5, santriId:6, bulan:"Juni", tahun:2025, nominal:500000, status:"lunas", tgl:"2025-06-04", metode:"Transfer" },
   ],
-  nextId: { santri:7, masuk:9, keluar:8, spp:6 }
+  nextId: { santri:7, masuk:6, keluar:5, spp:6 }
 };
 
 let config = JSON.parse(localStorage.getItem('pondok_config') || 'null') || {
@@ -277,273 +1053,259 @@ function save() { localStorage.setItem('pondok_data', JSON.stringify(state)); }
 function saveConfig() {
   config.nama = (document.getElementById('cfg-nama')||{}).value || config.nama;
   config.kota = (document.getElementById('cfg-kota')||{}).value || config.kota;
-  config.alamat = (document.getElementById('cfg-alamat')||{}).value || config.alamat;
-  config.telp = (document.getElementById('cfg-telp')||{}).value || config.telp;
-  config.kepala = (document.getElementById('cfg-kepala')||{}).value || config.kepala;
-  config.bendahara = (document.getElementById('cfg-bendahara')||{}).value || config.bendahara;
-  const sppRaw = parseNominal(document.getElementById('cfg-spp-default').value);
-  if(sppRaw > 0) config.sppDefault = sppRaw;
   localStorage.setItem('pondok_config', JSON.stringify(config));
 }
 
-// ==================== FORMAT NOMINAL ====================
 function fmt(n) { return 'Rp ' + Math.round(n||0).toLocaleString('id-ID'); }
 function parseNominal(v) { return parseFloat((v||'').toString().replace(/\./g,'').replace(',','.')) || 0; }
-
-function fmtInput(v) {
-  const num = parseFloat((v||'').toString().replace(/\./g,'').replace(',','.'));
-  if(isNaN(num) || num===0) return '';
-  return Math.round(num).toLocaleString('id-ID');
-}
+function fmtInput(v) { const num = parseFloat((v||'').toString().replace(/\./g,'').replace(',','.')); return isNaN(num) || num===0 ? '' : Math.round(num).toLocaleString('id-ID'); }
+function fmtTgl(s) { if(!s) return '-'; const d = new Date(s+'T00:00:00'); return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}); }
+function terbilangKapital(n) { return n ? Math.round(n).toLocaleString('id-ID') : 'Nol'; }
+function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2500); }
 
 function handleNominalInput(el, displayId, elId2, terbilangId) {
   const raw = el.value.replace(/\./g,'');
   const num = parseFloat(raw) || 0;
-  if(raw !== '') {
-    const formatted = Math.round(num).toLocaleString('id-ID');
-    el.value = formatted;
-  }
+  if(raw !== '') el.value = Math.round(num).toLocaleString('id-ID');
   const disp = document.getElementById(displayId);
-  if(disp) disp.textContent = num > 0 ? fmt(num) + (num >= 1000 ? ' · ' + terbilangKapital(num) + ' Rupiah' : '') : '';
+  if(disp) disp.textContent = num > 0 ? fmt(num) : '';
   if(elId2) { const el2 = document.getElementById(elId2); if(el2) el2.textContent = fmt(num); }
-  if(terbilangId) { const el3 = document.getElementById(terbilangId); if(el3) el3.textContent = num ? terbilangKapital(num)+' Rupiah' : '—'; }
 }
 
-function initials(n) { return (n||'').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
-function fmtTgl(s) {
-  if(!s) return '-';
-  const d = new Date(s+'T00:00:00');
-  return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+// Navigation
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  
+  const titles = { dashboard:'Dashboard', pemasukan:'Pemasukan', pengeluaran:'Pengeluaran', spp:'SPP', santri:'Santri', laporan:'Laporan', kwitansi:'Kwitansi', pengaturan:'Pengaturan' };
+  document.getElementById('page-title').textContent = titles[pageId] || 'Keuangan Pondok';
+  
+  document.querySelectorAll('.nav-icon-mobile, .drawer-nav-item').forEach(nav => nav.classList.remove('active'));
+  document.querySelectorAll(`[data-page="${pageId}"]`).forEach(nav => nav.classList.add('active'));
+  
+  if(pageId === 'dashboard') renderDashboard();
+  if(pageId === 'pemasukan') renderTable('masuk');
+  if(pageId === 'pengeluaran') renderTable('keluar');
+  if(pageId === 'spp') renderSPP();
+  if(pageId === 'santri') renderSantriTable();
+  if(pageId === 'laporan') renderLaporan();
+  if(pageId === 'kwitansi') initKwitansi();
+  
+  closeDrawer();
 }
 
-function terbilang(n) {
-  const satuan = ['','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas'];
-  if(n<12) return satuan[n];
-  if(n<20) return satuan[n-10]+' belas';
-  if(n<100) return satuan[Math.floor(n/10)]+' puluh'+(n%10?' '+satuan[n%10]:'');
-  if(n<200) return 'seratus'+(n%100?' '+terbilang(n%100):'');
-  if(n<1000) return satuan[Math.floor(n/100)]+' ratus'+(n%100?' '+terbilang(n%100):'');
-  if(n<2000) return 'seribu'+(n%1000?' '+terbilang(n%1000):'');
-  if(n<1000000) return terbilang(Math.floor(n/1000))+' ribu'+(n%1000?' '+terbilang(n%1000):'');
-  if(n<1000000000) return terbilang(Math.floor(n/1000000))+' juta'+(n%1000000?' '+terbilang(n%1000000):'');
-  return terbilang(Math.floor(n/1000000000))+' miliar'+(n%1000000000?' '+terbilang(n%1000000000):'');
-}
-function terbilangKapital(n) { const t=terbilang(Math.round(n)); return t.charAt(0).toUpperCase()+t.slice(1); }
-
-function toast(msg, type='') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = type==='error' ? 'var(--red)' : 'var(--ink)';
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2800);
+function toggleDrawer() {
+  const drawer = document.getElementById('drawer');
+  const overlay = document.querySelector('.drawer-overlay');
+  drawer.classList.toggle('open');
+  overlay.classList.toggle('open');
 }
 
-// ==================== EXPORT MENU ====================
-function toggleExportMenu(id) {
-  document.querySelectorAll('.export-menu').forEach(m=>{ if(m.id!==id) m.classList.remove('open'); });
-  document.getElementById(id).classList.toggle('open');
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.querySelector('.drawer-overlay').classList.remove('open');
 }
-document.addEventListener('click', e => {
-  if(!e.target.closest('.export-group')) document.querySelectorAll('.export-menu').forEach(m=>m.classList.remove('open'));
+
+// Event listeners
+document.querySelectorAll('.nav-icon-mobile').forEach(el => {
+  el.addEventListener('click', () => showPage(el.dataset.page));
+});
+document.querySelectorAll('.drawer-nav-item').forEach(el => {
+  el.addEventListener('click', () => showPage(el.dataset.page));
 });
 
-// ==================== SIMPLIFIED ZIP/EXCEL EXPORT ====================
-function downloadXLSX(sheets, filename) {
-  // Simple CSV fallback for demo - in production use SheetJS
-  // For this implementation, we'll use CSV for simplicity
-  const workbook = [];
-  for(const [sheetName, data] of Object.entries(sheets)) {
-    workbook.push(`Sheet: ${sheetName}`);
-    data.forEach(row => {
-      workbook.push(row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','));
-    });
-    workbook.push('');
+// Modal functions
+function openModal(id) {
+  const now = new Date().toISOString().split('T')[0];
+  if(id === 'modal-masuk') document.getElementById('m-masuk-tgl').value = now;
+  if(id === 'modal-keluar') document.getElementById('m-keluar-tgl').value = now;
+  if(id === 'modal-bayar-spp') {
+    const sel = document.getElementById('m-spp-santri');
+    sel.innerHTML = state.santri.map(s => `<option value="${s.id}">${s.nama}</option>`).join('');
+    document.getElementById('m-spp-bulan').innerHTML = BULAN.map(b => `<option>${b}</option>`).join('');
+    document.getElementById('m-spp-tahun').innerHTML = [2023,2024,2025,2026,2027].map(y => `<option>${y}</option>`).join('');
+    document.getElementById('m-spp-tgl').value = now;
+    if(state.santri[0]) {
+      document.getElementById('m-spp-nominal').value = fmtInput(state.santri[0].spp);
+      handleNominalInput(document.getElementById('m-spp-nominal'), 'm-spp-nominal-disp');
+    }
   }
-  const csvContent = workbook.join('\n');
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-  link.href = url;
-  link.setAttribute('download', filename.replace('.xlsx', '.csv'));
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Save functions
+function saveMasuk() {
+  const nominal = parseNominal(document.getElementById('m-masuk-nominal').value);
+  if(!nominal) { toast('Masukkan nominal!'); return; }
+  state.pemasukan.unshift({ id: state.nextId.masuk++, tgl: document.getElementById('m-masuk-tgl').value, ket: document.getElementById('m-masuk-ket').value || 'Pemasukan', kat: document.getElementById('m-masuk-kat').value, nominal, metode: document.getElementById('m-masuk-metode').value });
+  save(); closeModal('modal-masuk'); renderTable('masuk'); renderDashboard(); toast('Pemasukan disimpan ✓');
 }
 
-// ==================== PDF EXPORT ====================
-function exportPDFTable(title, headers, rows, filename) {
-  const now = new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'});
-  const tableRows = rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${title}</title><style>
-    body{font-family:Arial,sans-serif;font-size:11px;color:#1a1610;padding:20px;}
-    h2{font-size:16px;margin-bottom:4px;}
-    .sub{color:#6b6050;font-size:11px;margin-bottom:16px;}
-    table{width:100%;border-collapse:collapse;margin-top:8px;}
-    th{background:#1a1610;color:#f0e0a0;padding:7px 10px;text-align:left;font-size:10px;}
-    td{padding:6px 10px;border-bottom:1px solid #ebe3d5;}
-    tr:nth-child(even) td{background:#f5f0e8;}
-    .footer{margin-top:20px;font-size:10px;color:#a09585;}
-  </style></head><body>
-    <h2>${title}</h2>
-    <div class="sub">${config.nama} · Dicetak: ${now}</div>
-    <table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${tableRows}</tbody></table>
-    <div class="footer">Dokumen ini digenerate secara otomatis oleh Sistem Keuangan Pondok</div>
-  </body></html>`;
-  const w = window.open('', '_blank');
-  w.document.write(html);
-  w.document.close();
-  setTimeout(()=>{ w.focus(); w.print(); }, 500);
+function saveKeluar() {
+  const nominal = parseNominal(document.getElementById('m-keluar-nominal').value);
+  if(!nominal) { toast('Masukkan nominal!'); return; }
+  state.pengeluaran.unshift({ id: state.nextId.keluar++, tgl: document.getElementById('m-keluar-tgl').value, ket: document.getElementById('m-keluar-ket').value || 'Pengeluaran', kat: document.getElementById('m-keluar-kat').value, nominal, metode: document.getElementById('m-keluar-metode').value });
+  save(); closeModal('modal-keluar'); renderTable('keluar'); renderDashboard(); toast('Pengeluaran disimpan ✓');
 }
 
-// ==================== EXPORT FUNCTIONS ====================
-function exportExcel(jenis) {
-  const isM = jenis==='masuk';
+function saveSPP() {
+  const nominal = parseNominal(document.getElementById('m-spp-nominal').value);
+  if(!nominal) { toast('Masukkan nominal!'); return; }
+  const santriId = parseInt(document.getElementById('m-spp-santri').value);
+  const bulan = document.getElementById('m-spp-bulan').value;
+  const tahun = parseInt(document.getElementById('m-spp-tahun').value);
+  const existing = state.sppBayar.findIndex(x => x.santriId === santriId && x.bulan === bulan && x.tahun === tahun);
+  const entry = { id: existing >= 0 ? state.sppBayar[existing].id : state.nextId.spp++, santriId, bulan, tahun, nominal, status: document.getElementById('m-spp-status').value, tgl: document.getElementById('m-spp-tgl').value, metode: 'Tunai' };
+  if(existing >= 0) state.sppBayar[existing] = entry;
+  else state.sppBayar.push(entry);
+  save(); closeModal('modal-bayar-spp'); renderSPP(); renderDashboard(); toast('Pembayaran SPP disimpan ✓');
+}
+
+function saveSantri() {
+  const nama = document.getElementById('m-s-nama').value.trim();
+  if(!nama) { toast('Nama wajib diisi!'); return; }
+  const spp = parseNominal(document.getElementById('m-s-spp').value) || config.sppDefault || 500000;
+  state.santri.push({ id: state.nextId.santri++, nama, kelas: document.getElementById('m-s-kelas').value, spp, wali: document.getElementById('m-s-wali').value, telp: document.getElementById('m-s-telp').value, asal: '', aktif: true });
+  save(); closeModal('modal-santri'); renderSantriTable(); toast('Data santri disimpan ✓');
+}
+
+function deleteMasuk(id) { if(confirm('Hapus transaksi ini?')) { state.pemasukan = state.pemasukan.filter(x => x.id !== id); save(); renderTable('masuk'); renderDashboard(); toast('Dihapus'); } }
+function deleteKeluar(id) { if(confirm('Hapus transaksi ini?')) { state.pengeluaran = state.pengeluaran.filter(x => x.id !== id); save(); renderTable('keluar'); renderDashboard(); toast('Dihapus'); } }
+function deleteSantri(id) { if(confirm('Hapus santri ini?')) { state.santri = state.santri.filter(x => x.id !== id); state.sppBayar = state.sppBayar.filter(x => x.santriId !== id); save(); renderSantriTable(); toast('Santri dihapus'); } }
+
+// Render functions
+function renderDashboard() {
+  const now = new Date(); const bln = now.getMonth(); const thn = now.getFullYear();
+  document.getElementById('dash-subtitle').textContent = `${BULAN[bln]} ${thn} — ${state.santri.length} santri`;
+  const masukBln = state.pemasukan.filter(x => { const d = new Date(x.tgl); return d.getMonth() === bln && d.getFullYear() === thn; });
+  const keluarBln = state.pengeluaran.filter(x => { const d = new Date(x.tgl); return d.getMonth() === bln && d.getFullYear() === thn; });
+  const totalMasuk = masukBln.reduce((a,x) => a + x.nominal, 0);
+  const totalKeluar = keluarBln.reduce((a,x) => a + x.nominal, 0);
+  const totalSemua = state.pemasukan.reduce((a,x) => a + x.nominal, 0) - state.pengeluaran.reduce((a,x) => a + x.nominal, 0);
+  document.getElementById('dash-saldo').textContent = fmt(totalSemua);
+  document.getElementById('dash-masuk').textContent = fmt(totalMasuk);
+  document.getElementById('dash-masuk-count').textContent = masukBln.length + ' transaksi';
+  document.getElementById('dash-keluar').textContent = fmt(totalKeluar);
+  document.getElementById('dash-keluar-count').textContent = keluarBln.length + ' transaksi';
+  const sppBln = state.sppBayar.filter(x => x.bulan === BULAN[bln] && x.tahun === thn);
+  const sppLunas = sppBln.filter(x => x.status === 'lunas').length;
+  document.getElementById('dash-spp').textContent = fmt(sppBln.reduce((a,x) => a + x.nominal, 0));
+  document.getElementById('dash-spp-pct').textContent = `${sppLunas} dari ${state.santri.length} lunas`;
+  const all = [...state.pemasukan.map(x => ({...x, jenis:'masuk'})), ...state.pengeluaran.map(x => ({...x, jenis:'keluar'}))].sort((a,b) => new Date(b.tgl) - new Date(a.tgl)).slice(0,5);
+  document.getElementById('table-recent').innerHTML = all.map(x => `<tr><td>${fmtTgl(x.tgl)}</td><td>${x.ket.substring(0,20)}</td><td style="color:${x.jenis==='masuk'?'var(--green)':'var(--red)'}">${fmt(x.nominal)}</td></tr>`).join('') || '<tr><td colspan="3" style="text-align:center">Belum ada transaksi</td></tr>';
+}
+
+function renderTable(jenis) {
+  const isM = jenis === 'masuk';
   const data = isM ? state.pemasukan : state.pengeluaran;
-  const rows = [['Tanggal','Keterangan','Kategori','Metode','Nominal']];
-  data.forEach(x=>rows.push([fmtTgl(x.tgl), x.ket, x.kat, x.metode, x.nominal]));
-  rows.push(['','','','Total', data.reduce((a,x)=>a+x.nominal,0)]);
-  const title = isM ? 'Pemasukan' : 'Pengeluaran';
-  downloadXLSX({[title]: rows}, `${title}_${new Date().toISOString().split('T')[0]}.xlsx`);
-  toast(`Data ${title} diunduh ✓`);
-  document.getElementById('export-'+jenis).classList.remove('open');
+  const search = (document.getElementById('search-' + jenis) || {}).value || '';
+  const kat = (document.getElementById('filter-' + jenis + '-kat') || {}).value || '';
+  const filtered = data.filter(x => (!search || x.ket.toLowerCase().includes(search.toLowerCase())) && (!kat || x.kat === kat));
+  const total = filtered.reduce((a,x) => a + x.nominal, 0);
+  document.getElementById('table-' + jenis).innerHTML = filtered.map(x => `<tr><td>${fmtTgl(x.tgl)}</td><td style="max-width:120px;overflow:hidden">${x.ket.substring(0,25)}</td><td style="color:${isM?'var(--green)':'var(--red)'}">${fmt(x.nominal)}</td><td><button class="btn-ghost" style="padding:4px 8px;font-size:11px" onclick="${isM?'deleteMasuk':'deleteKeluar'}(${x.id})">🗑️</button></td></tr>`).join('') || '<tr><td colspan="4" style="text-align:center">Tidak ada data</td></tr>';
+  const lbl = document.getElementById('total-' + jenis + '-label');
+  if(lbl) lbl.textContent = `${filtered.length} transaksi · Total: ${fmt(total)}`;
 }
+function filterTable(j) { renderTable(j); }
 
-function exportPDF(jenis) {
-  const isM = jenis==='masuk';
-  const data = isM ? state.pemasukan : state.pengeluaran;
-  const headers = ['Tanggal','Keterangan','Kategori','Metode','Nominal'];
-  const rows = data.map(x=>[fmtTgl(x.tgl), x.ket, x.kat, x.metode, fmt(x.nominal)]);
-  exportPDFTable(isM ? 'Laporan Pemasukan' : 'Laporan Pengeluaran', headers, rows, '');
-  document.getElementById('export-'+jenis).classList.remove('open');
+function initMonthTabs() {
+  const tabs = document.getElementById('month-tabs');
+  if(!tabs) return;
+  tabs.innerHTML = BULAN.map(b => `<div class="month-tab${b === activeSPPBulan ? ' active' : ''}" onclick="selectSPPBulan('${b}')">${b.substring(0,3)}</div>`).join('');
 }
+function selectSPPBulan(b) { activeSPPBulan = b; initMonthTabs(); renderSPP(); }
+function changeSPPTahun(y) { activeSPPTahun = parseInt(y); renderSPP(); }
 
-function exportCSV(jenis) {
-  const isM = jenis==='masuk';
-  const data = isM ? state.pemasukan : state.pengeluaran;
-  const rows = [['Tanggal','Keterangan','Kategori','Metode','Nominal']];
-  data.forEach(x=>rows.push([fmtTgl(x.tgl), x.ket, x.kat, x.metode, x.nominal]));
-  const csv = rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const a = document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download=`${isM?'Pemasukan':'Pengeluaran'}_${new Date().toISOString().split('T')[0]}.csv`; a.click();
-  toast('CSV diunduh ✓');
-  document.getElementById('export-'+jenis).classList.remove('open');
-}
-
-function exportSPPExcel() {
-  const bayarMap={};
-  state.sppBayar.filter(x=>x.bulan===activeSPPBulan&&x.tahun===activeSPPTahun).forEach(x=>{ bayarMap[x.santriId]=x; });
-  const rows=[['Nama','Kelas','SPP/Bulan','Terbilang SPP','Dibayar','Status','Tanggal Bayar']];
-  state.santri.forEach(s=>{
-    const b=bayarMap[s.id];
-    rows.push([s.nama, s.kelas, s.spp, terbilangKapital(s.spp)+' Rupiah', b?b.nominal:0, b?b.status:'Belum Bayar', b?fmtTgl(b.tgl):'-']);
+function renderSPP() {
+  initMonthTabs();
+  const sel = document.getElementById('spp-tahun-sel');
+  if(sel) { sel.innerHTML = [2023,2024,2025,2026,2027].map(y => `<option>${y}</option>`).join(''); sel.value = activeSPPTahun; }
+  const bayarMap = {};
+  state.sppBayar.filter(x => x.bulan === activeSPPBulan && x.tahun === activeSPPTahun).forEach(x => { bayarMap[x.santriId] = x; });
+  let lunas = 0, belum = 0, cicil = 0;
+  const rows = state.santri.map(s => {
+    const b = bayarMap[s.id];
+    const status = b ? b.status : 'belum';
+    if(status === 'lunas') lunas++;
+    else if(status === 'cicil') cicil++;
+    else belum++;
+    return { s, b, status };
   });
-  downloadXLSX({[`SPP ${activeSPPBulan} ${activeSPPTahun}`]: rows}, `SPP_${activeSPPBulan}_${activeSPPTahun}.xlsx`);
-  toast('Excel SPP diunduh ✓');
-  document.getElementById('export-spp').classList.remove('open');
+  document.getElementById('spp-lunas-count').textContent = lunas;
+  document.getElementById('spp-belum-count').textContent = belum;
+  document.getElementById('spp-cicil-count').textContent = cicil;
+  document.getElementById('table-spp').innerHTML = rows.map(({s,b,status}) => {
+    const pct = b ? Math.round(b.nominal / s.spp * 100) : 0;
+    const bc = status === 'lunas' ? 'badge-green' : status === 'cicil' ? 'badge-amber' : 'badge-red';
+    const bl = status === 'lunas' ? 'Lunas' : status === 'cicil' ? 'Cicil' : 'Belum';
+    return `<tr><td><strong>${s.nama}</strong><br><span style="font-size:10px">${s.kelas}</span></td><td><span class="badge ${bc}">${bl}</span></td><td><div class="prog-wrap"><div class="prog-fill" style="width:${pct}%;background:${status==='lunas'?'var(--green)':status==='cicil'?'var(--amber)':'var(--red)'}"></div></div><span style="font-size:10px">${pct}%</span></td><td><button class="btn-ghost" style="padding:4px 8px;font-size:11px" onclick="quickBayar(${s.id})">💰</button></td></tr>`;
+  }).join('') || '<tr><td colspan="4" style="text-align:center">Tidak ada data</td></tr>';
 }
 
-function exportSPPPDF() {
-  const bayarMap={};
-  state.sppBayar.filter(x=>x.bulan===activeSPPBulan&&x.tahun===activeSPPTahun).forEach(x=>{ bayarMap[x.santriId]=x; });
-  const headers=['Nama','Kelas','SPP/Bulan','Dibayar','Status','Tanggal'];
-  const rows=state.santri.map(s=>{ const b=bayarMap[s.id]; return [s.nama,s.kelas,fmt(s.spp),b?fmt(b.nominal):'Rp 0',b?b.status:'Belum',b?fmtTgl(b.tgl):'-']; });
-  exportPDFTable(`Laporan SPP – ${activeSPPBulan} ${activeSPPTahun}`, headers, rows, '');
-  document.getElementById('export-spp').classList.remove('open');
+function quickBayar(santriId) {
+  openModal('modal-bayar-spp');
+  setTimeout(() => { document.getElementById('m-spp-santri').value = santriId; document.getElementById('m-spp-santri').dispatchEvent(new Event('change')); }, 50);
 }
 
-function exportSPP() {
-  const rows=[['Nama','Kelas','SPP/Bulan','Dibayar','Status','Tanggal']];
-  const bayarMap={};
-  state.sppBayar.filter(x=>x.bulan===activeSPPBulan&&x.tahun===activeSPPTahun).forEach(x=>{ bayarMap[x.santriId]=x; });
-  state.santri.forEach(s=>{ const b=bayarMap[s.id]; rows.push([s.nama,s.kelas,s.spp,b?b.nominal:0,b?b.status:'belum',b?b.tgl:'-']); });
-  const csv=rows.map(r=>r.join(',')).join('\n');
-  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download=`SPP_${activeSPPBulan}_${activeSPPTahun}.csv`; a.click();
-  toast('CSV SPP diunduh ✓');
-  document.getElementById('export-spp').classList.remove('open');
+function renderSantriTable() {
+  const search = (document.getElementById('search-santri') || {}).value || '';
+  const kelas = (document.getElementById('filter-kelas') || {}).value || '';
+  const filtered = state.santri.filter(s => (!search || s.nama.toLowerCase().includes(search.toLowerCase())) && (!kelas || s.kelas === kelas));
+  document.getElementById('table-santri').innerHTML = filtered.map(s => `<tr><td><strong>${s.nama}</strong><br><span style="font-size:10px">${s.wali || '-'}</span></td><td>${s.kelas}</td><td>${fmt(s.spp)}</td><td><button class="btn-ghost" style="padding:4px 8px;font-size:11px" onclick="deleteSantri(${s.id})">🗑️</button></td></tr>`).join('') || '<tr><td colspan="4" style="text-align:center">Belum ada data santri</td></tr>';
 }
 
-function exportSantriExcel() {
-  const rows=[['Nama','Kelas','Wali','No. Telp','Asal','SPP/Bulan','Terbilang SPP']];
-  state.santri.forEach(s=>rows.push([s.nama,s.kelas,s.wali||'-',s.telp||'-',s.asal||'-',s.spp,terbilangKapital(s.spp)+' Rupiah']));
-  downloadXLSX({'Data Santri': rows}, `DataSantri_${new Date().toISOString().split('T')[0]}.xlsx`);
-  toast('Excel Data Santri diunduh ✓');
-  document.getElementById('export-santri').classList.remove('open');
+function initLaporanSelects() {
+  const bs = document.getElementById('lap-bulan');
+  const ty = document.getElementById('lap-tahun');
+  if(bs) { bs.innerHTML = BULAN.map((b,i) => `<option value="${i}">${b}</option>`).join(''); bs.value = new Date().getMonth(); }
+  if(ty) { ty.innerHTML = [2023,2024,2025,2026,2027].map(y => `<option>${y}</option>`).join(''); ty.value = new Date().getFullYear(); }
 }
 
-function exportSantriPDF() {
-  const headers=['Nama','Kelas','Wali','No. Telp','Asal','SPP/Bulan'];
-  const rows=state.santri.map(s=>[s.nama,s.kelas,s.wali||'-',s.telp||'-',s.asal||'-',fmt(s.spp)]);
-  exportPDFTable('Data Santri', headers, rows, '');
-  document.getElementById('export-santri').classList.remove('open');
+function renderLaporan() {
+  const bln = parseInt(document.getElementById('lap-bulan').value);
+  const thn = parseInt(document.getElementById('lap-tahun').value);
+  const masuk = state.pemasukan.filter(x => { const d = new Date(x.tgl); return d.getMonth() === bln && d.getFullYear() === thn; });
+  const keluar = state.pengeluaran.filter(x => { const d = new Date(x.tgl); return d.getMonth() === bln && d.getFullYear() === thn; });
+  const tm = masuk.reduce((a,x) => a + x.nominal, 0);
+  const tk = keluar.reduce((a,x) => a + x.nominal, 0);
+  document.getElementById('lap-masuk').textContent = fmt(tm);
+  document.getElementById('lap-keluar').textContent = fmt(tk);
+  document.getElementById('lap-surplus').textContent = fmt(tm - tk);
+  const sppBln = state.sppBayar.filter(x => x.bulan === BULAN[bln] && x.tahun === thn);
+  document.getElementById('lap-spp').textContent = fmt(sppBln.reduce((a,x) => a + x.nominal, 0));
+  const all = [...masuk.map(x => ({...x, jenis:'masuk'})), ...keluar.map(x => ({...x, jenis:'keluar'}))].sort((a,b) => new Date(b.tgl) - new Date(a.tgl));
+  document.getElementById('lap-table').innerHTML = all.map(x => `<tr><td>${fmtTgl(x.tgl)}</td><td>${x.ket.substring(0,20)}</td><td style="color:${x.jenis==='masuk'?'var(--green)':'var(--red)'}">${fmt(x.nominal)}</td></tr>`).join('') || '<tr><td colspan="3" style="text-align:center">Tidak ada transaksi</td></tr>';
 }
 
-function exportSantriCSV() {
-  const rows=[['Nama','Kelas','Wali','No. Telp','Asal','SPP/Bulan']];
-  state.santri.forEach(s=>rows.push([s.nama,s.kelas,s.wali||'-',s.telp||'-',s.asal||'-',s.spp]));
-  const csv=rows.map(r=>r.map(v=>'"'+v+'"').join(',')).join('\n');
-  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download='DataSantri.csv'; a.click();
-  toast('CSV diunduh ✓');
-  document.getElementById('export-santri').classList.remove('open');
+function initKwitansi() {
+  const sel = document.getElementById('kwit-santri');
+  if(sel) sel.innerHTML = '<option value="">-- Pilih Santri --</option>' + state.santri.map(s => `<option value="${s.id}">${s.nama}</option>`).join('');
+  const bs = document.getElementById('kwit-bulan');
+  if(bs) { bs.innerHTML = BULAN.map(b => `<option>${b}</option>`).join(''); bs.value = activeSPPBulan; }
+  updateKwitansi();
 }
 
-function exportLaporanExcel() {
-  const bln=parseInt(document.getElementById('lap-bulan').value);
-  const thn=parseInt(document.getElementById('lap-tahun').value);
-  const masuk=state.pemasukan.filter(x=>{ const d=new Date(x.tgl); return d.getMonth()===bln&&d.getFullYear()===thn; });
-  const keluar=state.pengeluaran.filter(x=>{ const d=new Date(x.tgl); return d.getMonth()===bln&&d.getFullYear()===thn; });
-  const hdrM=['Tanggal','Keterangan','Kategori','Metode','Nominal'];
-  const rowsM=masuk.map(x=>[fmtTgl(x.tgl),x.ket,x.kat,x.metode,x.nominal]);
-  rowsM.push(['','','','Total',masuk.reduce((a,x)=>a+x.nominal,0)]);
-  const hdrK=['Tanggal','Keterangan','Kategori','Metode','Nominal'];
-  const rowsK=keluar.map(x=>[fmtTgl(x.tgl),x.ket,x.kat,x.metode,x.nominal]);
-  rowsK.push(['','','','Total',keluar.reduce((a,x)=>a+x.nominal,0)]);
-  downloadXLSX({Pemasukan:[hdrM,...rowsM], Pengeluaran:[hdrK,...rowsK]}, `Laporan_${BULAN[bln]}_${thn}.xlsx`);
-  toast('Excel Laporan diunduh ✓');
-  document.getElementById('export-laporan').classList.remove('open');
+function updateKwitansi() {
+  const sid = parseInt(document.getElementById('kwit-santri').value);
+  const s = state.santri.find(x => x.id === sid) || {};
+  const nom = parseNominal(document.getElementById('kwit-nominal').value) || 0;
+  document.getElementById('kw-pondok-name').textContent = config.nama || 'Pondok Pesantren';
+  document.getElementById('kw-no').textContent = 'KWT-' + Date.now().toString().slice(-6);
+  document.getElementById('kw-tgl').textContent = fmtTgl(new Date().toISOString().split('T')[0]);
+  document.getElementById('kw-nama').textContent = s.nama || '—';
+  document.getElementById('kw-bulan').textContent = document.getElementById('kwit-bulan').value;
+  document.getElementById('kw-nominal').textContent = fmt(nom);
+  document.getElementById('kw-terbilang').textContent = nom ? terbilangKapital(nom) + ' Rupiah' : '—';
 }
 
-function exportLaporanPDF() {
-  const bln=parseInt(document.getElementById('lap-bulan').value);
-  const thn=parseInt(document.getElementById('lap-tahun').value);
-  const masuk=state.pemasukan.filter(x=>{ const d=new Date(x.tgl); return d.getMonth()===bln&&d.getFullYear()===thn; });
-  const keluar=state.pengeluaran.filter(x=>{ const d=new Date(x.tgl); return d.getMonth()===bln&&d.getFullYear()===thn; });
-  const all=[...masuk.map(x=>({...x,jenis:'Masuk'})),...keluar.map(x=>({...x,jenis:'Keluar'}))].sort((a,b)=>new Date(b.tgl)-new Date(a.tgl));
-  const headers=['Tanggal','Keterangan','Jenis','Kategori','Nominal'];
-  const rows=all.map(x=>[fmtTgl(x.tgl),x.ket,x.jenis,x.kat,fmt(x.nominal)]);
-  exportPDFTable(`Laporan Bulanan – ${BULAN[bln]} ${thn}`, headers, rows, '');
-  document.getElementById('export-laporan').classList.remove('open');
-}
-
-function exportKwitansiPDF() {
-  const w=window.open('','_blank');
-  w.document.write(document.getElementById('preview-kwitansi').outerHTML.replace('<div class="card kwitansi print-target"','<div style="font-family:Georgia,serif;max-width:420px;padding:24px;border:2px solid #1a1610"'));
-  w.document.write('<style>*{box-sizing:border-box}body{margin:20px}hr{border-top:1px solid #ccc;margin:16px 0}.kwitansi-title{font-size:20px;font-weight:600;text-align:center}.kwitansi-sub{font-size:11px;text-align:center;color:#6b6050}.kwitansi-row{display:flex;gap:8px;margin-bottom:8px;font-size:13px}.kwitansi-key{color:#6b6050;min-width:130px}.kwitansi-val{font-weight:600}.kwitansi-amount{font-size:22px;font-weight:600;color:#2d6a4f}.kwitansi-footer{margin-top:24px;display:flex;justify-content:flex-end}.kwitansi-sign{border-top:1px solid #1a1610;padding-top:6px;margin-top:48px;width:140px;text-align:center}</style>');
-  w.document.write('<script>window.onload=()=>window.print()<\/script></body></html>');
-  w.document.close();
-}
-
-// ==================== BACKUP & RESTORE ====================
 function backupData() {
-  const backup = { exportedAt: new Date().toISOString(), version:'2.0', config, data: state };
-  const json = JSON.stringify(backup, null, 2);
+  const backup = { exportedAt: new Date().toISOString(), config, data: state };
   const a = document.createElement('a');
-  a.href = 'data:application/json;charset=utf-8,'+encodeURIComponent(json);
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(backup, null, 2));
   a.download = `Backup_Keuangan_${new Date().toISOString().split('T')[0]}.json`;
   a.click();
-  document.getElementById('backup-info').textContent = `✓ Backup terakhir: ${new Date().toLocaleString('id-ID')}`;
-  toast('Backup berhasil diunduh ✓');
-}
-
-function backupExcel() {
-  const rowsSantri=[['Nama','Kelas','Wali','No. Telp','Asal','SPP/Bulan'],...state.santri.map(s=>[s.nama,s.kelas,s.wali||'-',s.telp||'-',s.asal||'-',s.spp])];
-  const rowsMasuk=[['Tanggal','Keterangan','Kategori','Metode','Nominal'],...state.pemasukan.map(x=>[fmtTgl(x.tgl),x.ket,x.kat,x.metode,x.nominal])];
-  const rowsKeluar=[['Tanggal','Keterangan','Kategori','Metode','Nominal'],...state.pengeluaran.map(x=>[fmtTgl(x.tgl),x.ket,x.kat,x.metode,x.nominal])];
-  const rowsSPP=[['Santri','Bulan','Tahun','Nominal','Status','Tanggal Bayar','Metode'],...state.sppBayar.map(sb=>{ const s=state.santri.find(x=>x.id===sb.santriId)||{}; return [s.nama||'-',sb.bulan,sb.tahun,sb.nominal,sb.status,fmtTgl(sb.tgl),sb.metode]; })];
-  downloadXLSX({'Santri':rowsSantri,'Pemasukan':rowsMasuk,'Pengeluaran':rowsKeluar,'SPP':rowsSPP}, `BackupLengkap_Keuangan_${new Date().toISOString().split('T')[0]}.xlsx`);
-  toast('Excel backup lengkap diunduh ✓');
+  toast('Backup berhasil ✓');
 }
 
 function restoreData(input) {
@@ -554,21 +1316,20 @@ function restoreData(input) {
     try {
       const backup = JSON.parse(e.target.result);
       if(backup.data && backup.data.santri) {
-        if(!confirm(`Restore data dari backup ${backup.exportedAt||''}?\n\nData saat ini akan DITIMPA. Pastikan sudah backup data terbaru.`)) { input.value=''; return; }
-        state = backup.data;
-        if(backup.config) { config = backup.config; loadConfig(); }
-        save();
-        renderDashboard();
-        toast('Data berhasil dipulihkan ✓');
-        document.getElementById('backup-info').textContent = `✓ Restored dari backup: ${backup.exportedAt||''}`;
+        if(confirm(`Restore data dari ${backup.exportedAt || 'backup'}?\nData saat ini akan DITIMPA.`)) {
+          state = backup.data;
+          if(backup.config) config = backup.config;
+          save();
+          renderDashboard();
+          toast('Data berhasil dipulihkan ✓');
+        }
       } else { toast('File backup tidak valid!', 'error'); }
     } catch(err) { toast('Gagal membaca file backup!', 'error'); }
-    input.value='';
+    input.value = '';
   };
   reader.readAsText(file);
 }
 
-// ==================== KONFIRMASI HAPUS ====================
 function showKonfirmasi(title, msg, onOk) {
   document.getElementById('konfirmasi-title').textContent = title;
   document.getElementById('konfirmasi-msg').textContent = msg;
@@ -577,331 +1338,31 @@ function showKonfirmasi(title, msg, onOk) {
 }
 
 function confirmDeleteTransaksi() {
-  showKonfirmasi('Hapus Semua Transaksi?',
-    `Akan menghapus ${state.pemasukan.length} pemasukan dan ${state.pengeluaran.length} pengeluaran. Data santri dan SPP tidak terpengaruh.`,
-    () => {
-      state.pemasukan = []; state.pengeluaran = []; state.nextId.masuk=1; state.nextId.keluar=1;
-      save(); renderDashboard(); renderStatData(); toast('Semua transaksi dihapus');
-    }
-  );
+  showKonfirmasi('Hapus Semua Transaksi?', `Akan menghapus ${state.pemasukan.length} pemasukan dan ${state.pengeluaran.length} pengeluaran.`, () => {
+    state.pemasukan = []; state.pengeluaran = []; state.nextId.masuk = 1; state.nextId.keluar = 1;
+    save(); renderDashboard(); toast('Semua transaksi dihapus');
+  });
 }
 
 function confirmDeleteSPP() {
-  showKonfirmasi('Hapus Semua Data SPP?',
-    `Akan menghapus ${state.sppBayar.length} riwayat pembayaran SPP. Data santri tidak terpengaruh.`,
-    () => {
-      state.sppBayar = []; state.nextId.spp=1;
-      save(); renderSPP(); renderDashboard(); renderStatData(); toast('Data SPP dihapus');
-    }
-  );
+  showKonfirmasi('Hapus Semua SPP?', `Akan menghapus ${state.sppBayar.length} riwayat pembayaran.`, () => {
+    state.sppBayar = []; state.nextId.spp = 1;
+    save(); renderSPP(); renderDashboard(); toast('Data SPP dihapus');
+  });
 }
 
 function confirmResetAll() {
-  showKonfirmasi('⚠ RESET SELURUH DATA?',
-    'Ini akan menghapus SEMUA data: santri, pemasukan, pengeluaran, dan riwayat SPP. Pastikan sudah download backup sebelum melanjutkan!',
-    () => {
-      state = { santri:[], pemasukan:[], pengeluaran:[], sppBayar:[], nextId:{santri:1,masuk:1,keluar:1,spp:1} };
-      save(); renderDashboard(); renderStatData(); toast('Semua data direset');
-    }
-  );
+  showKonfirmasi('Reset Semua Data?', 'Ini akan menghapus SEMUA data: santri, transaksi, dan SPP. Tindakan tidak dapat dibatalkan!', () => {
+    state = { santri:[], pemasukan:[], pengeluaran:[], sppBayar:[], nextId:{santri:1,masuk:1,keluar:1,spp:1} };
+    save(); renderDashboard(); toast('Semua data direset');
+  });
 }
 
-// ==================== NAV ====================
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  const labelMap = { dashboard:'dashboard', pemasukan:'pemasukan', pengeluaran:'pengeluaran', spp:'spp', santri:'santri', laporan:'laporan', kwitansi:'kwitansi', pengaturan:'pengaturan' };
-  document.querySelectorAll('.nav-item').forEach(n=>{ if(n.textContent.toLowerCase().includes(labelMap[id]||id)) n.classList.add('active'); });
-  if(id==='dashboard') renderDashboard();
-  if(id==='pemasukan') renderTable('masuk');
-  if(id==='pengeluaran') renderTable('keluar');
-  if(id==='spp') renderSPP();
-  if(id==='santri') renderSantriTable();
-  if(id==='laporan') renderLaporan();
-  if(id==='kwitansi') initKwitansi();
-  if(id==='pengaturan') { loadConfig(); renderStatData(); }
-}
-
-// ==================== MODAL ====================
-function openModal(id) {
-  const now = new Date().toISOString().split('T')[0];
-  if(id==='modal-masuk') document.getElementById('m-masuk-tgl').value=now;
-  if(id==='modal-keluar') document.getElementById('m-keluar-tgl').value=now;
-  if(id==='modal-bayar-spp') {
-    const sel=document.getElementById('m-spp-santri');
-    sel.innerHTML=state.santri.map(s=>`<option value="${s.id}">${s.nama}</option>`).join('');
-    const bs=document.getElementById('m-spp-bulan');
-    bs.innerHTML=BULAN.map(b=>`<option>${b}</option>`).join('');
-    bs.value=activeSPPBulan;
-    const ty=document.getElementById('m-spp-tahun');
-    ty.innerHTML=[2023,2024,2025,2026,2027].map(y=>`<option>${y}</option>`).join('');
-    ty.value=activeSPPTahun;
-    document.getElementById('m-spp-tgl').value=now;
-    const s=state.santri[0];
-    if(s){document.getElementById('m-spp-nominal').value=fmtInput(s.spp);handleNominalInput(document.getElementById('m-spp-nominal'),'m-spp-nominal-disp');}
-    sel.onchange=function(){
-      const found=state.santri.find(x=>x.id==this.value);
-      if(found){document.getElementById('m-spp-nominal').value=fmtInput(found.spp);handleNominalInput(document.getElementById('m-spp-nominal'),'m-spp-nominal-disp');}
-    };
-  }
-  document.getElementById(id).classList.add('open');
-}
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');}));
-
-// ==================== SAVE FORMS ====================
-function saveMasuk() {
-  const nominal=parseNominal(document.getElementById('m-masuk-nominal').value);
-  if(!nominal){ toast('Masukkan nominal!','error'); return; }
-  state.pemasukan.unshift({ id:state.nextId.masuk++, tgl:document.getElementById('m-masuk-tgl').value, ket:document.getElementById('m-masuk-ket').value||'Pemasukan', kat:document.getElementById('m-masuk-kat').value, nominal, metode:document.getElementById('m-masuk-metode').value });
-  save(); closeModal('modal-masuk'); renderTable('masuk'); renderDashboard(); toast('Pemasukan disimpan ✓');
-  document.getElementById('m-masuk-nominal').value=''; document.getElementById('m-masuk-nominal-disp').textContent='';
-}
-
-function saveKeluar() {
-  const nominal=parseNominal(document.getElementById('m-keluar-nominal').value);
-  if(!nominal){ toast('Masukkan nominal!','error'); return; }
-  state.pengeluaran.unshift({ id:state.nextId.keluar++, tgl:document.getElementById('m-keluar-tgl').value, ket:document.getElementById('m-keluar-ket').value||'Pengeluaran', kat:document.getElementById('m-keluar-kat').value, nominal, metode:document.getElementById('m-keluar-metode').value });
-  save(); closeModal('modal-keluar'); renderTable('keluar'); renderDashboard(); toast('Pengeluaran disimpan ✓');
-  document.getElementById('m-keluar-nominal').value=''; document.getElementById('m-keluar-nominal-disp').textContent='';
-}
-
-function saveSPP() {
-  const nominal=parseNominal(document.getElementById('m-spp-nominal').value);
-  if(!nominal){ toast('Masukkan nominal!','error'); return; }
-  const santriId=parseInt(document.getElementById('m-spp-santri').value);
-  const bulan=document.getElementById('m-spp-bulan').value;
-  const tahun=parseInt(document.getElementById('m-spp-tahun').value);
-  const existing=state.sppBayar.findIndex(x=>x.santriId===santriId&&x.bulan===bulan&&x.tahun===tahun);
-  const entry={ id: existing>=0?state.sppBayar[existing].id:state.nextId.spp++, santriId, bulan, tahun, nominal, status:document.getElementById('m-spp-status').value, tgl:document.getElementById('m-spp-tgl').value, metode:document.getElementById('m-spp-metode').value };
-  if(existing>=0) state.sppBayar[existing]=entry; else state.sppBayar.push(entry);
-  save(); closeModal('modal-bayar-spp'); renderSPP(); renderDashboard(); toast('Pembayaran SPP disimpan ✓');
-}
-
-function saveSantri() {
-  const nama=document.getElementById('m-s-nama').value.trim();
-  if(!nama){ toast('Nama wajib diisi!','error'); return; }
-  const spp=parseNominal(document.getElementById('m-s-spp').value)||config.sppDefault||500000;
-  state.santri.push({ id:state.nextId.santri++, nama, kelas:document.getElementById('m-s-kelas').value, spp, wali:document.getElementById('m-s-wali').value, telp:document.getElementById('m-s-telp').value, asal:document.getElementById('m-s-asal').value, aktif:true });
-  save(); closeModal('modal-santri'); renderSantriTable(); toast('Data santri disimpan ✓');
-}
-
-// ==================== DELETE ====================
-function deleteMasuk(id){ if(!confirm('Hapus transaksi ini?'))return; state.pemasukan=state.pemasukan.filter(x=>x.id!==id); save(); renderTable('masuk'); renderDashboard(); toast('Dihapus'); }
-function deleteKeluar(id){ if(!confirm('Hapus transaksi ini?'))return; state.pengeluaran=state.pengeluaran.filter(x=>x.id!==id); save(); renderTable('keluar'); renderDashboard(); toast('Dihapus'); }
-function deleteSantri(id){ if(!confirm('Hapus santri ini? Data SPP terkait juga akan hilang.'))return; state.santri=state.santri.filter(x=>x.id!==id); state.sppBayar=state.sppBayar.filter(x=>x.santriId!==id); save(); renderSantriTable(); toast('Santri dihapus'); }
-
-// ==================== DASHBOARD ====================
-function renderDashboard() {
-  const now=new Date(); const bln=now.getMonth(); const thn=now.getFullYear();
-  document.getElementById('dash-subtitle').textContent=`${BULAN[bln]} ${thn} — Total ${state.santri.length} santri aktif`;
-  const masukBln=state.pemasukan.filter(x=>{ const d=new Date(x.tgl); return d.getMonth()===bln&&d.getFullYear()===thn; });
-  const keluarBln=state.pengeluaran.filter(x=>{ const d=new Date(x.tgl); return d.getMonth()===bln&&d.getFullYear()===thn; });
-  const totalMasuk=masukBln.reduce((a,x)=>a+x.nominal,0);
-  const totalKeluar=keluarBln.reduce((a,x)=>a+x.nominal,0);
-  const totalSemua=state.pemasukan.reduce((a,x)=>a+x.nominal,0)-state.pengeluaran.reduce((a,x)=>a+x.nominal,0);
-  document.getElementById('dash-saldo').textContent=fmt(totalSemua);
-  document.getElementById('dash-masuk').textContent=fmt(totalMasuk);
-  document.getElementById('dash-masuk-count').textContent=masukBln.length+' transaksi';
-  document.getElementById('dash-keluar').textContent=fmt(totalKeluar);
-  document.getElementById('dash-keluar-count').textContent=keluarBln.length+' transaksi';
-  const sppBln=state.sppBayar.filter(x=>x.bulan===BULAN[bln]&&x.tahun===thn);
-  const sppTotal=sppBln.reduce((a,x)=>a+x.nominal,0);
-  const sppLunas=sppBln.filter(x=>x.status==='lunas').length;
-  document.getElementById('dash-spp').textContent=fmt(sppTotal);
-  document.getElementById('dash-spp-pct').textContent=`${sppLunas} dari ${state.santri.length} santri lunas`;
-  // Chart 6 bulan
-  const months=[];
-  for(let i=5;i>=0;i--){ const d=new Date(thn,bln-i,1); months.push({label:BULAN[d.getMonth()].slice(0,3),m:d.getMonth(),y:d.getFullYear()}); }
-  const chartData=months.map(m=>({ label:m.label, val:state.pemasukan.filter(x=>{ const d=new Date(x.tgl); return d.getMonth()===m.m&&d.getFullYear()===m.y; }).reduce((a,x)=>a+x.nominal,0) }));
-  const maxVal=Math.max(...chartData.map(x=>x.val),1);
-  document.getElementById('chart-masuk').innerHTML=chartData.map(d=>`<div class="chart-bar-wrap"><div class="chart-bar-val">${d.val>=1000000?(d.val/1000000).toFixed(1)+'jt':d.val>=1000?(d.val/1000).toFixed(0)+'rb':'0'}</div><div class="chart-bar" style="height:${Math.max(4,Math.round(d.val/maxVal*100))}px;background:var(--green)"></div><div class="chart-bar-label">${d.label}</div></div>`).join('');
-  const kats={};
-  state.pengeluaran.forEach(x=>{ kats[x.kat]=(kats[x.kat]||0)+x.nominal; });
-  const sortedKat=Object.entries(kats).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const maxK=Math.max(...sortedKat.map(x=>x[1]),1);
-  document.getElementById('chart-kategori').innerHTML=sortedKat.map(([k,v])=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--ink2)">${k}</span><span style="color:var(--ink3)">${fmt(v)}</span></div><div class="prog-wrap"><div class="prog-fill" style="width:${Math.round(v/maxK*100)}%;background:var(--amber)"></div></div></div>`).join('');
-  const all=[...state.pemasukan.map(x=>({...x,jenis:'masuk'})),...state.pengeluaran.map(x=>({...x,jenis:'keluar'}))].sort((a,b)=>new Date(b.tgl)-new Date(a.tgl)).slice(0,8);
-  document.getElementById('table-recent').innerHTML=all.map(x=>`<tr><td>${fmtTgl(x.tgl)}</td><td>${x.ket}</td><td><span class="badge ${x.jenis==='masuk'?'badge-green':'badge-red'}">${x.jenis==='masuk'?'Masuk':'Keluar'}</span></td><td style="font-weight:500;color:${x.jenis==='masuk'?'var(--green)':'var(--red)'}">${fmt(x.nominal)}</td></tr>`).join('');
-}
-
-// ==================== TABLES ====================
-function renderTable(jenis) {
-  const isM=jenis==='masuk';
-  const data=isM?state.pemasukan:state.pengeluaran;
-  const search=(document.getElementById('search-'+jenis)||{}).value||'';
-  const kat=(document.getElementById('filter-'+jenis+'-kat')||{}).value||'';
-  const filtered=data.filter(x=>(!search||x.ket.toLowerCase().includes(search.toLowerCase()))&&(!kat||x.kat===kat));
-  const total=filtered.reduce((a,x)=>a+x.nominal,0);
-  document.getElementById('table-'+jenis).innerHTML=filtered.map(x=>`<tr><td>${fmtTgl(x.tgl)}</td><td>${x.ket}</td><td><span class="badge badge-gray">${x.kat}</span></td><td>${x.metode}</td><td style="font-weight:500;color:${isM?'var(--green)':'var(--red)'}">${fmt(x.nominal)}</td><td><button class="btn btn-danger" style="padding:3px 8px;font-size:10px" onclick="${isM?'deleteMasuk':'deleteKeluar'}(${x.id})">✕</button></td>`).join('')||'<tr><td colspan="6" style="text-align:center;color:var(--ink3);padding:20px">Tidak ada data</td></tr>';
-  const lbl=document.getElementById('total-'+jenis+'-label');
-  if(lbl) lbl.textContent=`${filtered.length} transaksi · Total: ${fmt(total)} · Terbilang: ${terbilangKapital(total)} Rupiah`;
-}
-function filterTable(j){ renderTable(j); }
-
-// ==================== SPP ====================
-function initSPPTahunSelect() {
-  const sel = document.getElementById('spp-tahun-sel');
-  if(!sel) return;
-  sel.innerHTML = [2023,2024,2025,2026,2027].map(y=>`<option>${y}</option>`).join('');
-  sel.value = activeSPPTahun;
-}
-function changeSPPTahun(y) { activeSPPTahun=parseInt(y); renderSPP(); }
-
-function initMonthTabs() {
-  const tabs=document.getElementById('month-tabs');
-  if(!tabs) return;
-  tabs.innerHTML=BULAN.map(b=>`<div class="month-tab${b===activeSPPBulan?' active':''}" onclick="selectSPPBulan('${b}')">${b}</div>`).join('');
-}
-function selectSPPBulan(b){ activeSPPBulan=b; initMonthTabs(); renderSPP(); }
-
-function renderSPP() {
-  initMonthTabs(); initSPPTahunSelect();
-  const filterSt=(document.getElementById('filter-spp-status')||{}).value||'';
-  const bayarMap={};
-  state.sppBayar.filter(x=>x.bulan===activeSPPBulan&&x.tahun===activeSPPTahun).forEach(x=>{ bayarMap[x.santriId]=x; });
-  let lunas=0,lunasRp=0,belum=0,belumRp=0,cicil=0,cicilRp=0;
-  const rows=state.santri.map(s=>{
-    const b=bayarMap[s.id]; const status=b?b.status:'belum'; const dibayar=b?b.nominal:0;
-    if(status==='lunas'){lunas++;lunasRp+=dibayar;} else if(status==='cicil'){cicil++;cicilRp+=dibayar;} else{belum++;belumRp+=(s.spp-dibayar);}
-    return {s,b,status,dibayar};
-  }).filter(x=>!filterSt||x.status===filterSt);
-  document.getElementById('spp-lunas-count').textContent=lunas;
-  document.getElementById('spp-lunas-rp').textContent=fmt(lunasRp);
-  document.getElementById('spp-belum-count').textContent=belum;
-  document.getElementById('spp-belum-rp').textContent=fmt(belumRp)+' kurang';
-  document.getElementById('spp-cicil-count').textContent=cicil;
-  document.getElementById('spp-cicil-rp').textContent=fmt(cicilRp)+' masuk';
-  document.getElementById('table-spp').innerHTML=rows.map(({s,b,status,dibayar})=>{
-    const pct=Math.round(dibayar/s.spp*100);
-    const bc=status==='lunas'?'badge-green':status==='cicil'?'badge-amber':'badge-red';
-    const bl=status==='lunas'?'Lunas':status==='cicil'?'Cicilan':'Belum';
-    const pc=status==='lunas'?'var(--green)':status==='cicil'?'var(--amber)':'var(--border)';
-    return `<tr>
-      <td><span class="avatar-sm">${initials(s.nama)}</span>${s.nama}</td>
-      <td>${s.kelas}</td>
-      <td><div style="font-weight:600">${fmt(s.spp)}</div><div style="font-size:10px;color:var(--ink3)">${terbilangKapital(s.spp)} Rupiah</div></td>
-      <td>${fmt(dibayar)}</td>
-      <td style="min-width:80px"><div class="prog-wrap"><div class="prog-fill" style="width:${pct}%;background:${pc}"></div></div><span style="font-size:10px;color:var(--ink3)">${pct}%</span></td>
-      <td><span class="badge ${bc}">${bl}</span></td>
-      <td>${b?fmtTgl(b.tgl):'-'}</td>
-      <td><button class="btn btn-ghost" style="padding:3px 8px;font-size:10px" onclick="quickBayar(${s.id})">Bayar</button></td>
-    </tr>`;
-  }).join('')||'<tr><td colspan="8" style="text-align:center;color:var(--ink3);padding:20px">Tidak ada data</td></tr>';
-}
-
-function quickBayar(santriId) {
-  openModal('modal-bayar-spp');
-  setTimeout(()=>{ document.getElementById('m-spp-santri').value=santriId; document.getElementById('m-spp-santri').dispatchEvent(new Event('change')); },50);
-}
-
-// ==================== SANTRI ====================
-function renderSantriTable() {
-  const search=(document.getElementById('search-santri')||{}).value||'';
-  const kelas=(document.getElementById('filter-kelas')||{}).value||'';
-  const filtered=state.santri.filter(s=>(!search||s.nama.toLowerCase().includes(search.toLowerCase()))&&(!kelas||s.kelas===kelas));
-  const nowBulan=BULAN[new Date().getMonth()]; const nowTahun=new Date().getFullYear();
-  document.getElementById('table-santri').innerHTML=filtered.map(s=>{
-    const bayarBulanIni=state.sppBayar.find(x=>x.santriId===s.id&&x.bulan===nowBulan&&x.tahun===nowTahun);
-    const statusBulanIni=bayarBulanIni?bayarBulanIni.status:'belum';
-    const bc=statusBulanIni==='lunas'?'badge-green':statusBulanIni==='cicil'?'badge-amber':'badge-red';
-    const bl=statusBulanIni==='lunas'?'Lunas':statusBulanIni==='cicil'?'Cicilan':'Belum';
-    return `<tr>
-      <td><span class="avatar-sm">${initials(s.nama)}</span>${s.nama}</td>
-      <td>${s.kelas}</td><td>${s.wali||'-'}</td><td>${s.telp||'-'}</td>
-      <td><div style="font-weight:600">${fmt(s.spp)}</div><div style="font-size:10px;color:var(--ink3)">${terbilangKapital(s.spp)} Rupiah</div></td>
-      <td style="font-size:10px;color:var(--ink3);max-width:160px;line-height:1.4">${terbilangKapital(s.spp)} Rupiah</td>
-      <td><span class="badge ${bc}">${bl} – ${nowBulan}</span></td>
-      <td><button class="btn btn-danger" style="padding:3px 8px;font-size:10px" onclick="deleteSantri(${s.id})">✕</button></td>
-    </tr>`;
-  }).join('')||'<tr><td colspan="8" style="text-align:center;color:var(--ink3);padding:20px">Belum ada data santri</td></tr>';
-}
-
-// ==================== LAPORAN ====================
-function initLaporanSelects() {
-  const bs=document.getElementById('lap-bulan'); const ty=document.getElementById('lap-tahun');
-  if(!bs||!ty) return;
-  bs.innerHTML=BULAN.map((b,i)=>`<option value="${i}">${b}</option>`).join('');
-  bs.value=new Date().getMonth();
-  ty.innerHTML=[2023,2024,2025,2026,2027].map(y=>`<option>${y}</option>`).join('');
-  ty.value=new Date().getFullYear();
-}
-
-function renderLaporan() {
-  const bln=parseInt(document.getElementById('lap-bulan').value);
-  const thn=parseInt(document.getElementById('lap-tahun').value);
-  const masuk=state.pemasukan.filter(x=>{ const d=new Date(x.tgl); return d.getMonth()===bln&&d.getFullYear()===thn; });
-  const keluar=state.pengeluaran.filter(x=>{ const d=new Date(x.tgl); return d.getMonth()===bln&&d.getFullYear()===thn; });
-  const tm=masuk.reduce((a,x)=>a+x.nominal,0); const tk=keluar.reduce((a,x)=>a+x.nominal,0);
-  const sppBln=state.sppBayar.filter(x=>x.bulan===BULAN[bln]&&x.tahun===thn);
-  document.getElementById('lap-masuk').textContent=fmt(tm);
-  document.getElementById('lap-keluar').textContent=fmt(tk);
-  document.getElementById('lap-surplus').textContent=fmt(tm-tk);
-  document.getElementById('lap-spp').textContent=fmt(sppBln.reduce((a,x)=>a+x.nominal,0));
-  const katM={},katK={};
-  masuk.forEach(x=>katM[x.kat]=(katM[x.kat]||0)+x.nominal);
-  keluar.forEach(x=>katK[x.kat]=(katK[x.kat]||0)+x.nominal);
-  document.getElementById('lap-detail-masuk').innerHTML=Object.entries(katM).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border2);font-size:12px"><span style="color:var(--ink2)">${k}</span><span style="color:var(--green);font-weight:500">${fmt(v)}</span></div>`).join('')||'<div style="color:var(--ink3);font-size:12px;padding:12px 0">Tidak ada pemasukan</div>';
-  document.getElementById('lap-detail-keluar').innerHTML=Object.entries(katK).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border2);font-size:12px"><span style="color:var(--ink2)">${k}</span><span style="color:var(--red);font-weight:500">${fmt(v)}</span></div>`).join('')||'<div style="color:var(--ink3);font-size:12px;padding:12px 0">Tidak ada pengeluaran</div>';
-  const all=[...masuk.map(x=>({...x,jenis:'masuk'})),...keluar.map(x=>({...x,jenis:'keluar'}))].sort((a,b)=>new Date(b.tgl)-new Date(a.tgl));
-  document.getElementById('lap-table').innerHTML=all.map(x=>`<tr><td>${fmtTgl(x.tgl)}</td><td>${x.ket}</td><td><span class="badge ${x.jenis==='masuk'?'badge-green':'badge-red'}">${x.jenis==='masuk'?'Masuk':'Keluar'}</span></td><td><span class="badge badge-gray">${x.kat}</span></td><td style="font-weight:500;color:${x.jenis==='masuk'?'var(--green)':'var(--red)'}">${fmt(x.nominal)}</td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:var(--ink3);padding:20px">Tidak ada transaksi</td></tr>';
-}
-
-// ==================== KWITANSI ====================
-function initKwitansi() {
-  const sel=document.getElementById('kwit-santri');
-  sel.innerHTML='<option value="">-- Pilih Santri --</option>'+state.santri.map(s=>`<option value="${s.id}">${s.nama}</option>`).join('');
-  const bs=document.getElementById('kwit-bulan');
-  bs.innerHTML=BULAN.map(b=>`<option>${b}</option>`).join('');
-  bs.value=activeSPPBulan;
-  document.getElementById('kwit-no').value='KWT-'+Date.now().toString().slice(-6);
-  document.getElementById('kwit-pondok').value=config.nama||'Pondok Pesantren';
-  updateKwitansi();
-}
-function updateKwitansi() {
-  const sid=parseInt(document.getElementById('kwit-santri').value);
-  const s=state.santri.find(x=>x.id===sid)||{};
-  const nomStr=document.getElementById('kwit-nominal').value.replace(/\./g,'');
-  const nom=parseFloat(nomStr)||0;
-  document.getElementById('kw-pondok-name').textContent=document.getElementById('kwit-pondok').value||config.nama||'Pondok Pesantren';
-  document.getElementById('kw-no').textContent=document.getElementById('kwit-no').value||'—';
-  document.getElementById('kw-tgl').textContent=fmtTgl(new Date().toISOString().split('T')[0]);
-  document.getElementById('kw-nama').textContent=s.nama||'—';
-  document.getElementById('kw-kelas').textContent=s.kelas||'—';
-  document.getElementById('kw-ket').textContent=document.getElementById('kwit-ket').value||'—';
-  document.getElementById('kw-bulan').textContent=document.getElementById('kwit-bulan').value;
-  document.getElementById('kw-nominal').textContent=fmt(nom);
-  document.getElementById('kw-terbilang').textContent=nom?terbilangKapital(nom)+' Rupiah':'—';
-}
-
-// ==================== PENGATURAN ====================
-function loadConfig() {
-  const fields=['nama','kota','alamat','telp','kepala','bendahara'];
-  fields.forEach(f=>{ const el=document.getElementById('cfg-'+f); if(el) el.value=config[f]||''; });
-  const sppEl=document.getElementById('cfg-spp-default');
-  if(sppEl){ sppEl.value=fmtInput(config.sppDefault||500000); handleNominalInput(sppEl,'cfg-spp-display'); }
-}
-
-function renderStatData() {
-  const el=document.getElementById('stat-data-detail');
-  if(!el) return;
-  const stats=[
-    {label:'Total Santri', val:state.santri.length+' orang', color:'var(--gold)'},
-    {label:'Total Pemasukan', val:state.pemasukan.length+' transaksi', color:'var(--green)'},
-    {label:'Total Pengeluaran', val:state.pengeluaran.length+' transaksi', color:'var(--red)'},
-    {label:'Riwayat SPP', val:state.sppBayar.length+' catatan', color:'var(--blue)'},
-  ];
-  el.innerHTML=stats.map(s=>`<div class="stat-card"><div class="stat-label">${s.label}</div><div class="stat-value" style="color:${s.color};font-size:18px">${s.val}</div></div>`).join('');
-}
-
-// ==================== INIT ====================
+// Initialization
 function init() {
-  const now=new Date();
-  document.getElementById('tanggal-sidebar').textContent=now.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+  document.getElementById('drawer-date').textContent = new Date().toLocaleDateString('id-ID', {day:'2-digit',month:'short',year:'numeric'});
   initLaporanSelects();
   initMonthTabs();
-  initSPPTahunSelect();
   renderDashboard();
 }
 init();
@@ -909,3 +1370,7 @@ init();
 </body>
 </html>
 HTMLEOF
+
+echo "✅ Mobile version created successfully!"
+echo "📱 File size: $(wc -c < /mnt/user-data/outputs/keuangan-pondok-mobile.html) bytes"
+echo "📍 Location: /mnt/user-data/outputs/keuangan-pondok-mobile.html"
